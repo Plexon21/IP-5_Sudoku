@@ -29,5 +29,52 @@ public class Board {
 		for (int i = 0; i < values.length; i++) {
 			cells[i/9][i%9] = values[i] == 0 ? new Cell() : new Cell(values[i]);
 		}
+		
+		for (int i = 0; i < this.HEIGHT; i++) {
+			rows[i] = new Row(this.WIDTH);
+		}
+		
+		for (int i = 0; i < this.WIDTH; i++) {
+			columns[i] = new Column(this.HEIGHT);
+		}
+		
+		for (int i = 0; i < this.HEIGHT; i++) {
+			for (int j = 0; j < this.WIDTH; j++) {
+				
+				Cell tempCell = cells[i][j];
+				
+				rows[i].setCell(tempCell, j);
+				columns[j].setCell(tempCell, i);
+				
+			}
+		}
+	}
+	
+	public String createBoardString() {
+		String s = 
+				+ this.HEIGHT + " "
+				+ this.WIDTH + " "
+				+ this.BOXHEIGHT + " "
+				+ this.BOXWIDTH + " ";
+		
+		for (int i = 0; i < this.HEIGHT; i++) {
+			for (int j = 0; j < this.WIDTH; j++) {
+				s += cells[i][j].getValue();				
+			}
+		}
+		
+		return s;
+	}
+	
+	
+	public void simplePrint() {
+		System.out.println("cells:");
+		
+		for (int i = 0; i < this.HEIGHT; i++) {
+			for (int j = 0; j < this.WIDTH; j++) {
+				System.out.print((j % this.BOXWIDTH == 0 ? "|" : " ") + (cells[i][j].getValue() == 0 ? " " : cells[i][j].getValue()) + (j == this.WIDTH-1 ? "|" : ""));				
+			}
+			System.out.println();
+		}
 	}
 }
