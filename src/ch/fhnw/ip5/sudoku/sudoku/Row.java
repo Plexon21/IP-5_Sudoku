@@ -4,11 +4,11 @@ public class Row {
 	
 	private Cell[] cells;
 	
-	public Row(int width) {
+	public Row(byte width) {
 		cells = new Cell[width];
 	}
 	
-	public void setCell(Cell cell, int pos) {
+	public void setCell(Cell cell, byte pos) {
 		cells[pos] = cell;
 	}
 

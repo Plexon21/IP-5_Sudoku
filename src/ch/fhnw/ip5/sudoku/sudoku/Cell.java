@@ -26,6 +26,10 @@ public class Cell {
 		return values[value-1] == CellState.POSSIBLE;
 	}
 	
+	public void setImpossible(byte value) {
+		values[value-1] = CellState.IMPOSSIBLE;
+	}
+	
 	public void setValue(byte value) {
 		Arrays.fill(values, CellState.IMPOSSIBLE);
 		values[value-1] = CellState.CERTAIN;

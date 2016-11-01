@@ -1,17 +1,41 @@
 package ch.fhnw.ip5.sudoku.solver.methods;
 
+import ch.fhnw.ip5.sudoku.solver.Updater;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
+import ch.fhnw.ip5.sudoku.sudoku.Cell;
 
 public class NakedSingleMethod implements SolveMethod{
 
 	public boolean solve(Board b) {
-		// TODO Auto-generated method stub
+		for (byte i = 0; i < b.HEIGHT; i++) {
+			for (byte j = 0; j < b.WIDTH; j++) {
+				Cell tempCell = b.getCellAt(i, j);
+				if (tempCell.getValue() == 0) {
+					byte count = 0;
+					
+					for (byte x = 1; x <= b.WIDTH;x++) {
+						if (tempCell.isPossible(x)) {
+							count++;
+						}
+					}
+					
+					if (count == 1) {
+						for (byte x = 1; x <= b.WIDTH;x++) {
+							if (tempCell.isPossible(x)) {
+								Updater.updateBoard(b, i, j, x);
+								return true;
+							}
+						}
+					}
+					
+				}
+			}
+		}
 		return false;
 	}
 
 	public int getDifficultyValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 }
