@@ -6,18 +6,28 @@ public class Cell {
 	
 	private CellState[] values;
 	private byte finalValue;
+	private byte possibleValuesCount;
 	
-	public Cell() {
-		values = new CellState[9];
+	private byte hpos;
+	private byte wpos;
+	
+	public Cell(byte size, byte hpos, byte wpos) {
+		values = new CellState[size];
 		Arrays.fill(values, CellState.POSSIBLE);
+		possibleValuesCount = size;
+		this.hpos = hpos;
+		this.wpos = wpos;
 		
 		finalValue = 0;
 	}
 	
-	public Cell(byte value) {
-		values = new CellState[9];
+	public Cell(byte size, byte hpos, byte wpos, byte value) {
+		values = new CellState[size];
 		Arrays.fill(values, CellState.IMPOSSIBLE);
 		values[value-1] = CellState.CERTAIN;
+		possibleValuesCount = 0;
+		this.hpos = hpos;
+		this.wpos = wpos;
 		
 		finalValue = value;
 	}
@@ -27,16 +37,32 @@ public class Cell {
 	}
 	
 	public void setImpossible(byte value) {
-		values[value-1] = CellState.IMPOSSIBLE;
+		if (values[value-1] != CellState.IMPOSSIBLE) {
+			values[value-1] = CellState.IMPOSSIBLE;
+			possibleValuesCount--;
+		}
 	}
 	
 	public void setValue(byte value) {
 		Arrays.fill(values, CellState.IMPOSSIBLE);
 		values[value-1] = CellState.CERTAIN;
+		possibleValuesCount = 0;
 		this.finalValue = value;
 	}
 	
 	public byte getValue() {
 		return this.finalValue;
+	}
+	
+	public byte getPossibleValuesCount() {
+		return possibleValuesCount;
+	}
+	
+	public byte getHpos() {
+		return this.hpos;
+	}
+	
+	public byte getWpos() {
+		return this.wpos;
 	}
 }

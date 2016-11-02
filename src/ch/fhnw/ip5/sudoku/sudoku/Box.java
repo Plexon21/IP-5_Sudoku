@@ -2,14 +2,16 @@ package ch.fhnw.ip5.sudoku.sudoku;
 
 public class Box {
 	
-	private Cell[][] cells;
+	private Cell[] cells;
 	
-	public Box(byte height, byte width) {
-		cells = new Cell[height][width];
+	public Box(byte size) {
+		cells = new Cell[size];
 	}
 	
-	public void setCell(Cell cell, byte hpos, byte wpos) {
-		cells[hpos][wpos] = cell;
+	public void setCell(Cell cell, byte pos) {
+		cells[pos] = cell;
 	}
-
+	
+	public Cell[] getCells() { return cells; }
+	
 }

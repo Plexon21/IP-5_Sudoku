@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Updater;
+import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
@@ -27,11 +28,20 @@ public class Application {
 				
 //				b.cluesPrint();
 				
-				SolveMethod m = new NakedSingleMethod();
+				SolveMethod m1 = new NakedSingleMethod();
+				SolveMethod m2 = new HiddenSingleMethod();
 				
-				while(m.solve(b)) {
-					b.simplePrint();
-				}
+				m1.solve(b);
+				
+				b.simplePrint();
+				
+				m2.solve(b);
+				
+				b.simplePrint();
+				
+//				while(m.solve(b)) {
+//					b.simplePrint();
+//				}
 				
 				b.cluesPrint();
 			}

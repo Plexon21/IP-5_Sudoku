@@ -11,5 +11,7 @@ public class Column {
 	public void setCell(Cell cell, byte pos) {
 		cells[pos] = cell;
 	}
+	
+	public Cell[] getCells() { return cells; }
 
 }

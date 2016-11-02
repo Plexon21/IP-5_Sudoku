@@ -10,24 +10,13 @@ public class NakedSingleMethod implements SolveMethod{
 		for (byte i = 0; i < b.HEIGHT; i++) {
 			for (byte j = 0; j < b.WIDTH; j++) {
 				Cell tempCell = b.getCellAt(i, j);
-				if (tempCell.getValue() == 0) {
-					byte count = 0;
-					
+				if (tempCell.getPossibleValuesCount() == 1) {
 					for (byte x = 1; x <= b.WIDTH;x++) {
 						if (tempCell.isPossible(x)) {
-							count++;
+							Updater.updateBoard(b, i, j, x);
+							return true;
 						}
 					}
-					
-					if (count == 1) {
-						for (byte x = 1; x <= b.WIDTH;x++) {
-							if (tempCell.isPossible(x)) {
-								Updater.updateBoard(b, i, j, x);
-								return true;
-							}
-						}
-					}
-					
 				}
 			}
 		}

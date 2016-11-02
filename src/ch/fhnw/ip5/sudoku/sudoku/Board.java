@@ -14,6 +14,16 @@ public class Board {
 	private Row[] rows;
 	private Column[] columns;
 	private Box[] boxes;
+	/*
+	 * Idea: Box nach einem Array füllen in dem die Box-nummer relativ zur einlese-nummer stehen
+	 * 
+	 * eg:
+	 * 	1 2 2 2
+	 *  1 3 3 2
+	 *  1 3 3 4
+	 *  1 4 4 4
+	 * 
+	 */
 	
 	public Board(byte height, byte width, byte boxheight, byte boxwidth, byte[] values) {
 		this.HEIGHT = height;
@@ -30,7 +40,7 @@ public class Board {
 		
 		// (1)
 		for (byte i = 0; i < values.length; i++) {
-			cells[i/9][i%9] = values[i] == 0 ? new Cell() : new Cell(values[i]);
+			cells[i/this.WIDTH][i%this.WIDTH] = values[i] == 0 ? new Cell(this.WIDTH, (byte)(i/this.WIDTH), (byte)(i%this.WIDTH)) : new Cell(this.WIDTH, (byte)(i/this.WIDTH), (byte)(i%this.WIDTH), values[i]);
 		}
 		
 		for (byte i = 0; i < this.HEIGHT; i++) {
@@ -41,12 +51,26 @@ public class Board {
 			columns[i] = new Column(this.HEIGHT);
 		}
 		
+		for (byte i = 0; i < this.WIDTH; i++) {
+			boxes[i] = new Box(this.WIDTH);
+		}
+		
+		
+		
 		for (byte i = 0; i < this.HEIGHT; i++) {
 			for (byte j = 0; j < this.WIDTH; j++) {
 				
 				//TODO: combine this with (1)
 				
 				Cell tempCell = cells[i][j];
+				
+				byte hBoxstart = (byte) (i / BOXHEIGHT);
+				byte wBoxstart = (byte) (j / BOXWIDTH);
+				
+				byte hBoxPos = (byte) (i % BOXHEIGHT);
+				byte wBoxPos = (byte) (j % BOXWIDTH);
+				
+				boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(tempCell, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
 				
 				rows[i].setCell(tempCell, j);
 				columns[j].setCell(tempCell, i);
@@ -102,9 +126,8 @@ public class Board {
 				for (byte x = 1; x <= this.WIDTH; x++) {
 					System.out.print(tempCell.isPossible(x) ? " X" : "  ");
 				}
-				System.out.println();
+				System.out.println(" " + tempCell.getPossibleValuesCount());
 			}
-
 		}
 	}
 	
