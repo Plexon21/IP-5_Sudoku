@@ -121,7 +121,7 @@ public class Board {
 		for (int i = 0; i < this.HEIGHT; i++) {
 			for (int j = 0; j < this.WIDTH; j++) {
 				Cell tempCell = cells[i][j];
-				System.out.print("Cell #" + (i*this.WIDTH + j));
+				System.out.print("Cell #" + i + " "+ j);
 				
 				for (byte x = 1; x <= this.WIDTH; x++) {
 					System.out.print(tempCell.isPossible(x) ? " X" : "  ");

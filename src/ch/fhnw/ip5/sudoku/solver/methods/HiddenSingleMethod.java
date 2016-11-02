@@ -20,9 +20,12 @@ public class HiddenSingleMethod implements SolveMethod {
 				
 				for (byte j = 0; j < b.HEIGHT; j++) {
 					
-					if (b.getRows()[i].getCells()[j].isPossible(x)) { countRow++; posRow = j;}
-					if (b.getColumns()[i].getCells()[j].isPossible(x)) {countColumn++; posColumn = j;}
-					if (b.getBoxes()[i].getCells()[j].isPossible(x)) {countBox++; posBox = j;}
+					if (b.getRows()[i].getCells()[j].isPossible(x)) { 
+						countRow++; posRow = j;}
+					if (b.getColumns()[i].getCells()[j].isPossible(x)) {
+						countColumn++; posColumn = j;}
+					if (b.getBoxes()[i].getCells()[j].isPossible(x)) {
+						countBox++; posBox = j;}
 					
 				}
 				

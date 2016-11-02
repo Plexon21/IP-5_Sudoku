@@ -3,7 +3,6 @@ package ch.fhnw.ip5.sudoku;
 import java.util.ArrayList;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
-import ch.fhnw.ip5.sudoku.solver.Updater;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
@@ -19,31 +18,22 @@ public class Application {
 			ArrayList<Board> list = SudokuReader.readFromFile("veryEasy.sudoku");
 			
 			for (Board b : list) {
-				b.simplePrint();
-				System.out.println(b.createBoardString());
-				
-//				b.cluesPrint();
-				
+//				b.simplePrint();
+//				System.out.println(b.createBoardString());
+//				
 				b.setupBoard();
-				
+//				
 //				b.cluesPrint();
 				
 				SolveMethod m1 = new NakedSingleMethod();
 				SolveMethod m2 = new HiddenSingleMethod();
-				
-				m1.solve(b);
-				
+		
 				b.simplePrint();
 				
-				m2.solve(b);
-				
-				b.simplePrint();
-				
-//				while(m.solve(b)) {
-//					b.simplePrint();
-//				}
-				
-				b.cluesPrint();
+				while(m2.solve(b)) {
+					b.simplePrint();
+				}
+
 			}
 			
 		} catch (Exception e) {
