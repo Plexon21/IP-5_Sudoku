@@ -15,7 +15,7 @@ public class Application {
 //		System.out.println("Sudoku has been solved. Believe me!");
 		
 		try {
-			ArrayList<Board> list = SudokuReader.readFromFile("veryEasy.sudoku");
+			ArrayList<Board> list = SudokuReader.readFromFile("medium.sudoku");
 			
 			for (Board b : list) {
 //				b.simplePrint();
