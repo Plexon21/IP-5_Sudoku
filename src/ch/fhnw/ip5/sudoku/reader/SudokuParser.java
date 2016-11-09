@@ -18,11 +18,11 @@ public class SudokuParser {
 	public static char[] values;
 
 	public static void main(String[] args) {
-		Board b = parseSudoku("06010054100_000.31_32.sud");
+		Board b = parseAndReadSudoku("06010054100_000.31_32.sud");
 		b.simplePrint();
 	}
 
-	public static Board parseSudoku(String fileName) {
+	public static String parseSudoku(String fileName) {
 		try {
 			DocumentBuilderFactory bf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = bf.newDocumentBuilder();
@@ -30,13 +30,15 @@ public class SudokuParser {
 			traverse(doc.getDocumentElement(), 0);
 			int fieldSide = (int) Math.sqrt(values.length);
 			int boxSide = (int) Math.sqrt(fieldSide);
-			String line = fieldSide + " " + fieldSide + " " + boxSide + " " + boxSide + " " + String.valueOf(values);
-			return SudokuReader.parseLine(line);
-
+			return fieldSide + " " + fieldSide + " " + boxSide + " " + boxSide + " " + String.valueOf(values);
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 			return null;
 		}
+	}
+
+	public static Board parseAndReadSudoku(String fileName) {
+		return SudokuReader.parseLine(parseSudoku(fileName));
 	}
 
 	private static void traverse(Element e, int indent) {
