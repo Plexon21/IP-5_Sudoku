@@ -1,12 +1,16 @@
 package ch.fhnw.ip5.sudoku;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
 public class ParseFolder {
-	public static String sourceFolder = "parse";
-	public static String targetFolder = "res";
+	public static String sourceFolder = "C:/Programming/IP-5_Sudoku/res/raw";
+	public static String targetFolder = "C:/Programming/IP-5_Sudoku/res/parsed";
+
 	public static void main(String[] args) {
 		SudokuParser parser = new SudokuParser();
 		if (args.length > 0) {
@@ -16,22 +20,40 @@ public class ParseFolder {
 			targetFolder = args[1];
 		}
 		File node = new File(sourceFolder);
-		parse(node, parser);
+		String[] subNodes = node.list();
+		for (String fileName : subNodes) {
+			parse(new File(node, fileName), parser, new File(targetFolder));
+		}
 	}
 
-	private static void parse(File node, SudokuParser parser) {
-		if (node.isDirectory()) {
-			String[] subNode = node.list();
+	private static void parse(File source, SudokuParser parser, File target) {
+		if (source.isDirectory()) {
+			File targetFolder = new File(target, source.getName());
+			targetFolder.mkdirs();
+			String[] subNode = source.list();
+
 			for (String fileName : subNode) {
-				parse(new File(node, fileName), parser);
+				parse(new File(source, fileName), parser, targetFolder);
 			}
 		} else {
-			SudokuParser.parseSudoku(node.getAbsolutePath());
+			write(SudokuParser.parseSudoku(source.getAbsolutePath()),
+					new File(target, source.getName().substring(0, source.getName().length() - 3) + "sudoku"));
 		}
-
 	}
 
-	private static void write(String parseSudoku, File node) {
-		File file = new File(targetFolder,)		
+	private static void write(String sudokuString, File target) {
+		target.getParentFile().mkdirs();
+		try {
+			target.createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try (PrintWriter writer = new PrintWriter(target)) {
+
+			writer.println(sudokuString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
 }
