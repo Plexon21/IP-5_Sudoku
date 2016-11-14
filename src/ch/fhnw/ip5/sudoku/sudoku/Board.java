@@ -104,6 +104,19 @@ public class Board {
 		return s;
 	}
 	
+	public boolean isFilled() {
+		
+		for (int i = 0; i < this.HEIGHT; i++) {
+			for (int j = 0; j < this.WIDTH; j++) {
+				if (cells[i][j].getValue() == 0) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	public void simplePrint() {
 		System.out.println("cells:");
 		

@@ -8,8 +8,8 @@ import java.io.PrintWriter;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
 public class ParseFolder {
-	public static String sourceFolder = "C:/Programming/IP-5_Sudoku/res/raw";
-	public static String targetFolder = "C:/Programming/IP-5_Sudoku/res/parsed";
+	public static String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy";
+	public static String targetFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed";
 
 	public static void main(String[] args) {
 		SudokuParser parser = new SudokuParser();
