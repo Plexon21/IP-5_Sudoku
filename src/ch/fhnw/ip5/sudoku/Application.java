@@ -26,7 +26,7 @@ public class Application {
 		try {
 			
 			for (String fileName : subNodes) {
-				list.addAll(SudokuReader.readFromFile(sourceFolder + "\\" + fileName));
+				list.addAll(SudokuReader.readFromFilename(sourceFolder + "\\" + fileName));
 			}
 
 			
