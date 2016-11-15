@@ -3,6 +3,7 @@ package ch.fhnw.ip5.sudoku;
 import java.io.File;
 import java.util.ArrayList;
 
+import ch.fhnw.ip5.sudoku.gui.SudokuGUI;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
@@ -15,7 +16,9 @@ public class Application {
 
 //		System.out.println("Sudoku has been solved. Believe me!");
 		
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed";
+		//"C:\\Programming\\IP-5_sudoku\\res\\parsed"
+		//"C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed"
+		String sourceFolder = "C:\\Programming\\IP-5_sudoku\\res\\parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
 		
@@ -35,6 +38,8 @@ public class Application {
 			
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
+			
+			Board lastSolved = null;
 			
 			for (Board b : list) {
 				
@@ -63,12 +68,16 @@ public class Application {
 				
 				if (b.isFilled()) {
 					numberOfSolvableWithGivenMethods++;
+					lastSolved = b;
 				}
 
 			}
 			
 			System.out.println("Total number of Sudoku = " + numberOfSudokus);
 			System.out.println("Number of solvable Sudokus with given Methods = " + numberOfSolvableWithGivenMethods);
+			
+			
+			SudokuGUI gui = new SudokuGUI(lastSolved);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
