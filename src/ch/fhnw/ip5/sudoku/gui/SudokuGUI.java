@@ -5,6 +5,8 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,39 +16,41 @@ import javax.swing.SwingConstants;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-public class SudokuGUI {
-	JFrame frame;
+public class SudokuGUI extends JFrame implements ActionListener {
 	Board[] boards;
-
-	public SudokuGUI() {
-		initFrame();
-	}
+	int currStep = 0;
+	JPanel sudokuPanel;
 
 	public SudokuGUI(Board b) {
-		this.boards = new Board[]{b};
+		this.boards = new Board[] { b };
 		initFrame();
-		frame.add(showSudoku(boards[0]), BorderLayout.CENTER);
+		add(showSudoku(boards[0]), BorderLayout.CENTER);
+		setVisible(true);
 	}
 
-	/*public SudokuGUI(Board[] boards) {
+	public SudokuGUI(Board[] boards, int currStep) {
+		this.currStep = currStep;
 		this.boards = boards;
 		initFrame();
-		frame.add(showSudoku(boards[0]), BorderLayout.CENTER);
+		sudokuPanel = showSudoku(boards[currStep]);
+		add(sudokuPanel, BorderLayout.CENTER);
+
 		JPanel buttons = new JPanel();
-		Button prev = new Button("Previous Step");		
+		Button prev = new Button("Previous Step");
+		prev.addActionListener(this);
 		Button next = new Button("Next Step");
+		next.addActionListener(this);
 		buttons.add(prev);
 		buttons.add(next);
-		frame.add(buttons, BorderLayout.SOUTH);
+		add(buttons, BorderLayout.SOUTH);
 
-	}*/
+		setVisible(true);
+	}
 
 	public void initFrame() {
-		frame = new JFrame("Sudoku");
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
-		frame.setVisible(true);
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(800, 600);
 	}
 
 	public JPanel showSudoku(Board b) {
@@ -62,6 +66,7 @@ public class SudokuGUI {
 
 			for (byte j = 0; j < b.WIDTH; j++) {
 				String value = String.valueOf(b.getCellAt(i, j).getValue());
+				value = (value.equals("0")) ? "" : value;
 				final JTextField field = new JTextField(value);
 				field.setHorizontalAlignment(SwingConstants.CENTER);
 				field.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -73,5 +78,35 @@ public class SudokuGUI {
 		}
 
 		return grid;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		switch (command) {
+		case "Previous Step":
+			currStep--;
+			if (currStep > 0) {
+				remove(sudokuPanel);
+				// sudokuPanel = new JPanel();
+				sudokuPanel = showSudoku(boards[currStep]);
+				add(sudokuPanel, BorderLayout.CENTER);
+			} else
+				currStep = 0;
+			break;
+		case "Next Step":
+			if (currStep < boards.length-1) {
+				currStep++;
+				remove(sudokuPanel);
+				// sudokuPanel = new JPanel();
+				sudokuPanel = showSudoku(boards[currStep]);
+				add(sudokuPanel, BorderLayout.CENTER);
+			} else
+				currStep = boards.length - 1;
+			break;
+		}
+		repaint();
+		revalidate();
+
 	}
 }
