@@ -2,6 +2,7 @@ package ch.fhnw.ip5.sudoku.solver.methods;
 
 import ch.fhnw.ip5.sudoku.solver.Updater;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
+import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
 public class HiddenSingleMethod implements SolveMethod {
 
@@ -30,15 +31,15 @@ public class HiddenSingleMethod implements SolveMethod {
 				}
 				
 				if (countRow == 1) {
-					Updater.updateBoard(b, i, posRow, x);
+					Updater.updateBoard(b, i, posRow, x, UsedMethod.HIDDENSINGLE);
 					return true;
 				}
 				if (countColumn == 1) {
-					Updater.updateBoard(b, posColumn, i, x);
+					Updater.updateBoard(b, posColumn, i, x, UsedMethod.HIDDENSINGLE);
 					return true;
 				}
 				if (countBox == 1) {
-					Updater.updateBoard(b, b.getBoxes()[i].getCells()[posBox].getHpos(), b.getBoxes()[i].getCells()[posBox].getWpos(), x);
+					Updater.updateBoard(b, b.getBoxes()[i].getCells()[posBox].getHpos(), b.getBoxes()[i].getCells()[posBox].getWpos(), x, UsedMethod.HIDDENSINGLE);
 					return true;
 				}
 				
