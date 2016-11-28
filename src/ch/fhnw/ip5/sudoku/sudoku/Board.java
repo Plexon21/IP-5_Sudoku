@@ -71,6 +71,30 @@ public class Board {
 		}
 	}
 	
+	public Board(Board b) {
+		this.SIZE = b.SIZE;
+		this.BOXHEIGHT = b.BOXHEIGHT;
+		this.BOXWIDTH = b.BOXWIDTH;
+		
+		cells = new Cell[this.SIZE][this.SIZE];
+		
+		rows = new Container[this.SIZE];
+		columns = new Container[this.SIZE];
+		boxes = new Container[this.SIZE];
+		
+		for (byte i = 0; i < this.SIZE; i++) {
+			rows[i] = new Container(this.SIZE);
+			columns[i] = new Container(this.SIZE);
+			boxes[i] = new Container(this.SIZE);
+		}
+		
+		for (byte i = 0; i < this.SIZE; i++) {
+			for (byte j = 0; j < this.SIZE; j++) {
+				this.cells[i][j] = new Cell(b.getCellAt(i, j));
+			}
+		}
+	}
+	
 	public void setupBoard() {
 		for (byte i = 0; i < SIZE; i++) {
 			for (byte j = 0; j < SIZE; j++) {
