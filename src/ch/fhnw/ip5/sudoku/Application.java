@@ -2,7 +2,9 @@ package ch.fhnw.ip5.sudoku;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import ch.fhnw.ip5.sudoku.gui.SudokuGUI;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
@@ -15,6 +17,9 @@ public class Application {
 
 //		System.out.println("Sudoku has been solved. Believe me!");
 		
+		//"C:\\Programming\\IP-5_sudoku\\res\\parsed"
+		//"C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed"
+		//String sourceFolder = "C:\\Programming\\IP-5_sudoku\\res\\parsed";
 		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010054800_Archive_veryeasy_parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
@@ -36,6 +41,8 @@ public class Application {
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
 			
+			Board[] lastSolved = null;
+			
 			for (Board b : list) {
 				
 				b.setupBoard();
@@ -43,6 +50,7 @@ public class Application {
 				boolean solving = true;
 				int m1counter = 0;
 				int m2counter = 0;
+				List<Board> steps = new ArrayList<Board>();
 				
 				while(solving) {
 					if (m1.solve(b)) {
@@ -52,6 +60,7 @@ public class Application {
 					} else {
 						solving = false;
 					}
+					steps.add(SudokuReader.parseLine(b.createBoardString()));
 				}
 				
 				System.out.println("Result board");
@@ -63,12 +72,16 @@ public class Application {
 				
 				if (b.isFilled()) {
 					numberOfSolvableWithGivenMethods++;
+					lastSolved = steps.toArray(new Board[steps.size()]);
 				}
 
 			}
 			
 			System.out.println("Total number of Sudoku = " + numberOfSudokus);
 			System.out.println("Number of solvable Sudokus with given Methods = " + numberOfSolvableWithGivenMethods);
+			
+			
+			SudokuGUI gui = new SudokuGUI(lastSolved,lastSolved.length-1);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
