@@ -12,9 +12,9 @@ public class Cell {
 	private byte wpos;
 	
 	public Cell(byte size, byte hpos, byte wpos) {
-		values = new CellState[size];
+		this.values = new CellState[size];
 		Arrays.fill(values, CellState.POSSIBLE);
-		possibleValuesCount = size;
+		this.possibleValuesCount = size;
 		this.hpos = hpos;
 		this.wpos = wpos;
 		
@@ -22,14 +22,26 @@ public class Cell {
 	}
 	
 	public Cell(byte size, byte hpos, byte wpos, byte value) {
-		values = new CellState[size];
+		this.values = new CellState[size];
 		Arrays.fill(values, CellState.IMPOSSIBLE);
-		values[value-1] = CellState.CERTAIN;
-		possibleValuesCount = 0;
+		this.values[value-1] = CellState.CERTAIN;
+		this.possibleValuesCount = 0;
 		this.hpos = hpos;
 		this.wpos = wpos;
 		
 		finalValue = value;
+	}
+	
+	public Cell(Cell c) {
+		this.values = new CellState[c.values.length];
+		for (int i = 0; i < this.values.length; i++) {
+			this.values[i] = c.values[i];
+		}
+		this.finalValue = c.finalValue;
+		this.possibleValuesCount = c.possibleValuesCount;
+		
+		this.hpos = c.hpos;
+		this.wpos = c.wpos;
 	}
 	
 	public boolean isPossible(byte value) {
