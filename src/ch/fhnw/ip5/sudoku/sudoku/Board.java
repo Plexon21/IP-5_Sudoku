@@ -75,7 +75,7 @@ public class Board {
 		for (byte i = 0; i < SIZE; i++) {
 			for (byte j = 0; j < SIZE; j++) {
 				if (cells[i][j].getValue() != 0) {
-					Updater.updateBoard(this, i, j, cells[i][j].getValue());
+					Updater.updateBoard(this, i, j, cells[i][j].getValue(), UsedMethod.GIVEN);
 				}
 			}
 		}

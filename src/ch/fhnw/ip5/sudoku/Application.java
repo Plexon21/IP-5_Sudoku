@@ -55,12 +55,13 @@ public class Application {
 				while(solving) {
 					if (m1.solve(b)) {
 						m1counter++;
+						steps.add(SudokuReader.parseLine(b.createBoardString()));	
 					} else if (m2.solve(b)) {
 						m2counter++;
+						steps.add(SudokuReader.parseLine(b.createBoardString()));
 					} else {
 						solving = false;
 					}
-					steps.add(SudokuReader.parseLine(b.createBoardString()));
 				}
 				
 				System.out.println("Result board");
