@@ -15,7 +15,7 @@ public class Application {
 
 //		System.out.println("Sudoku has been solved. Believe me!");
 		
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed";
+		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010054800_Archive_veryeasy_parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
 		

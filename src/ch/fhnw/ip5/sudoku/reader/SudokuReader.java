@@ -43,18 +43,23 @@ public class SudokuReader {
 	public static Board parseLine(String line) {
 		String[] fields = line.split(" +");
 		
-		byte height = (byte) Integer.parseInt(fields[0]);
-		byte width = (byte) Integer.parseInt(fields[1]);
+		byte size = (byte) Integer.parseInt(fields[0]);
+		byte size2 = (byte) Integer.parseInt(fields[1]);
 		byte boxheight = (byte) Integer.parseInt(fields[2]);
 		byte boxwidth = (byte) Integer.parseInt(fields[3]);
+		
+		if (size != size2) {
+			throw new IllegalStateException("Board is not squared");
+		}
 
-		byte[] values = new byte[height * width];
+		byte[] values = new byte[size * size];
 
 		for (int i = 0; i < values.length; i++) {
 			values[i] = (byte) Integer.parseInt(fields[4].charAt(i) + "");
 		}
-
-		return new Board(height, width, boxheight, boxwidth, values);
+		
+		
+		return new Board(size, boxheight, boxwidth, values);
 	}
 
 }

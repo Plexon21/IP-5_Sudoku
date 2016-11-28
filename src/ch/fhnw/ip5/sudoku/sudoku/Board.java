@@ -4,16 +4,15 @@ import ch.fhnw.ip5.sudoku.solver.Updater;
 
 public class Board {
 	
-	public final byte HEIGHT;
-	public final byte WIDTH;
+	public final byte SIZE;
 	
 	public final byte BOXHEIGHT;
 	public final byte BOXWIDTH;
 	
 	private Cell[][] cells;
-	private Row[] rows;
-	private Column[] columns;
-	private Box[] boxes;
+	private Container[] rows;
+	private Container[] columns;
+	private Container[] boxes;
 	/*
 	 * Idea: Box nach einem Array füllen in dem die Box-nummer relativ zur einlese-nummer stehen
 	 * 
@@ -25,62 +24,56 @@ public class Board {
 	 * 
 	 */
 	
-	public Board(byte height, byte width, byte boxheight, byte boxwidth, byte[] values) {
-		this.HEIGHT = height;
-		this.WIDTH = width;
+	public Board(byte size, byte boxheight, byte boxwidth, byte[] values) {
+		this.SIZE = size;
 		this.BOXHEIGHT = boxheight;
 		this.BOXWIDTH = boxwidth;
 		
-		assert values.length == this.HEIGHT * this.WIDTH; //TODO: replace with proper condition checking
+		assert values.length == this.SIZE * this.SIZE; //TODO: replace with proper condition checking
 		
-		cells = new Cell[this.HEIGHT][this.WIDTH];
-		rows = new Row[this.HEIGHT];
-		columns = new Column[this.WIDTH];
-		boxes = new Box[(this.HEIGHT/this.BOXHEIGHT) * (this.WIDTH/this.BOXWIDTH)];
+		cells = new Cell[this.SIZE][this.SIZE];
+		
+		rows = new Container[this.SIZE];
+		columns = new Container[this.SIZE];
+		boxes = new Container[this.SIZE];
+		
+		for (byte i = 0; i < this.SIZE; i++) {
+			rows[i] = new Container(this.SIZE);
+			columns[i] = new Container(this.SIZE);
+			boxes[i] = new Container(this.SIZE);
+		}
 		
 		// (1)
 		for (byte i = 0; i < values.length; i++) {
-			cells[i/this.WIDTH][i%this.WIDTH] = values[i] == 0 ? new Cell(this.WIDTH, (byte)(i/this.WIDTH), (byte)(i%this.WIDTH)) : new Cell(this.WIDTH, (byte)(i/this.WIDTH), (byte)(i%this.WIDTH), values[i]);
-		}
-		
-		for (byte i = 0; i < this.HEIGHT; i++) {
-			rows[i] = new Row(this.WIDTH);
-		}
-		
-		for (byte i = 0; i < this.WIDTH; i++) {
-			columns[i] = new Column(this.HEIGHT);
-		}
-		
-		for (byte i = 0; i < this.WIDTH; i++) {
-			boxes[i] = new Box(this.WIDTH);
-		}
-		
-		
-		
-		for (byte i = 0; i < this.HEIGHT; i++) {
-			for (byte j = 0; j < this.WIDTH; j++) {
-				
-				//TODO: combine this with (1)
-				
-				Cell tempCell = cells[i][j];
-				
-				byte hBoxstart = (byte) (i / BOXHEIGHT);
-				byte wBoxstart = (byte) (j / BOXWIDTH);
-				
-				byte hBoxPos = (byte) (i % BOXHEIGHT);
-				byte wBoxPos = (byte) (j % BOXWIDTH);
-				
-				boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(tempCell, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
-				
-				rows[i].setCell(tempCell, j);
-				columns[j].setCell(tempCell, i);
+			
+			byte hpos = (byte) (i/this.SIZE);
+			byte wpos = (byte) (i%this.SIZE);
+			
+			Cell c;
+			
+			if (values[i] == 0) {
+				c = new Cell(this.SIZE, hpos, wpos);
+			} else {
+				c = new Cell(this.SIZE, hpos, wpos, values[i]);
 			}
+			
+			cells[hpos][wpos] = c;
+			rows[hpos].setCell(c, wpos);
+			columns[wpos].setCell(c, hpos);
+			
+			byte hBoxstart = (byte) (hpos / BOXHEIGHT);
+			byte wBoxstart = (byte) (wpos / BOXWIDTH);
+			
+			byte hBoxPos = (byte) (hpos % BOXHEIGHT);
+			byte wBoxPos = (byte) (wpos % BOXWIDTH);
+			
+			boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(c, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
 		}
 	}
 	
 	public void setupBoard() {
-		for (byte i = 0; i < HEIGHT; i++) {
-			for (byte j = 0; j < WIDTH; j++) {
+		for (byte i = 0; i < SIZE; i++) {
+			for (byte j = 0; j < SIZE; j++) {
 				if (cells[i][j].getValue() != 0) {
 					Updater.updateBoard(this, i, j, cells[i][j].getValue());
 				}
@@ -90,13 +83,13 @@ public class Board {
 	
 	public String createBoardString() {
 		String s = 
-				+ this.HEIGHT + " "
-				+ this.WIDTH + " "
+				+ this.SIZE + " "
+				+ this.SIZE + " "
 				+ this.BOXHEIGHT + " "
 				+ this.BOXWIDTH + " ";
 		
-		for (int i = 0; i < this.HEIGHT; i++) {
-			for (int j = 0; j < this.WIDTH; j++) {
+		for (int i = 0; i < this.SIZE; i++) {
+			for (int j = 0; j < this.SIZE; j++) {
 				s += cells[i][j].getValue();				
 			}
 		}
@@ -106,8 +99,8 @@ public class Board {
 	
 	public boolean isFilled() {
 		
-		for (int i = 0; i < this.HEIGHT; i++) {
-			for (int j = 0; j < this.WIDTH; j++) {
+		for (int i = 0; i < this.SIZE; i++) {
+			for (int j = 0; j < this.SIZE; j++) {
 				if (cells[i][j].getValue() == 0) {
 					return false;
 				}
@@ -120,9 +113,9 @@ public class Board {
 	public void simplePrint() {
 		System.out.println("cells:");
 		
-		for (int i = 0; i < this.HEIGHT; i++) {
-			for (int j = 0; j < this.WIDTH; j++) {
-				System.out.print((j % this.BOXWIDTH == 0 ? "|" : " ") + (cells[i][j].getValue() == 0 ? " " : cells[i][j].getValue()) + (j == this.WIDTH-1 ? "|" : ""));				
+		for (int i = 0; i < this.SIZE; i++) {
+			for (int j = 0; j < this.SIZE; j++) {
+				System.out.print((j % this.BOXWIDTH == 0 ? "|" : " ") + (cells[i][j].getValue() == 0 ? " " : cells[i][j].getValue()) + (j == this.SIZE-1 ? "|" : ""));				
 			}
 			System.out.println((i+1) % this.BOXHEIGHT == 0 ? "\n" : "");
 		}
@@ -131,12 +124,12 @@ public class Board {
 	public void cluesPrint() {
 		System.out.println("cells with clues");
 		
-		for (int i = 0; i < this.HEIGHT; i++) {
-			for (int j = 0; j < this.WIDTH; j++) {
+		for (int i = 0; i < this.SIZE; i++) {
+			for (int j = 0; j < this.SIZE; j++) {
 				Cell tempCell = cells[i][j];
 				System.out.print("Cell #" + i + " "+ j);
 				
-				for (byte x = 1; x <= this.WIDTH; x++) {
+				for (byte x = 1; x <= this.SIZE; x++) {
 					System.out.print(tempCell.isPossible(x) ? " X" : "  ");
 				}
 				System.out.println(" " + tempCell.getPossibleValuesCount());
@@ -148,15 +141,15 @@ public class Board {
 		return cells;
 	}
 	
-	public Row[] getRows() {
+	public Container[] getRows() {
 		return rows;
 	}
 	
-	public Column[] getColumns() {
+	public Container[] getColumns() {
 		return columns;
 	}
 	
-	public Box[] getBoxes() {
+	public Container[] getBoxes() {
 		return boxes;
 	}
 	
