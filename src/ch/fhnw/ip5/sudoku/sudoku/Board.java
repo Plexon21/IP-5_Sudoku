@@ -44,7 +44,6 @@ public class Board {
 			columns[i] = new Container(this.SIZE);
 			boxes[i] = new Container(this.SIZE);
 		}
-		
 		byte givenCount = 0;
 		
 		// (1)

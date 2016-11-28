@@ -8,6 +8,7 @@ import ch.fhnw.ip5.sudoku.gui.SudokuGUI;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
@@ -37,6 +38,7 @@ public class Application {
 			
 			SolveMethod m1 = new NakedSingleMethod();
 			SolveMethod m2 = new HiddenSingleMethod();
+			SolveMethod m3 = new NakedSubSetMethod();
 			
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
@@ -50,6 +52,7 @@ public class Application {
 				boolean solving = true;
 				int m1counter = 0;
 				int m2counter = 0;
+				int m3counter = 0;
 				List<Board> steps = new ArrayList<Board>();
 				steps.add(new Board(b));
 				
@@ -59,6 +62,9 @@ public class Application {
 						steps.add(new Board(b));	
 					} else if (m2.solve(b)) {
 						m2counter++;
+						steps.add(new Board(b));
+					} else if (m3.solve(b)) {
+						m3counter++;
 						steps.add(new Board(b));
 					} else {
 						solving = false;
@@ -70,6 +76,7 @@ public class Application {
 				System.out.println();
 				System.out.println("Naked Single Counter  = " + m1counter);
 				System.out.println("Hidden Single Counter = " + m2counter);
+				System.out.println("Naked Subset Counter = " + m3counter);
 				System.out.println("\n\n");
 				
 				if (b.isFilled()) {
