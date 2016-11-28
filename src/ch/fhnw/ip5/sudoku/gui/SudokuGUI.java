@@ -74,15 +74,15 @@ public class SudokuGUI extends JFrame implements ActionListener {
 	public JPanel showSudoku(Board b) {
 		JPanel grid = new JPanel();
 		grid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		grid.setLayout(new GridLayout(b.HEIGHT / b.BOXHEIGHT, b.WIDTH / b.BOXWIDTH));
+		grid.setLayout(new GridLayout(b.SIZE / b.BOXHEIGHT, b.SIZE / b.BOXWIDTH));
 
-		for (byte i = 0; i < b.HEIGHT; i++) {
+		for (byte i = 0; i < b.SIZE; i++) {
 
 			JPanel box = new JPanel();
 			box.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 			box.setLayout(new GridLayout(b.BOXHEIGHT, b.BOXWIDTH));
 
-			for (byte j = 0; j < b.WIDTH; j++) {
+			for (byte j = 0; j < b.SIZE; j++) {
 				Cell c = b.getCellAt(i, j);
 				String value = String.valueOf(c.getValue());
 				value = (value.equals("0")) ? "" : value;

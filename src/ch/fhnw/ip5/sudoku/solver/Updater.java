@@ -38,14 +38,14 @@ public class Updater {
 	}
 	public static void updateBoard(Board b, byte hpos, byte wpos, byte value) {
 
-		for (byte i = 0; i < b.WIDTH; i++) {
+		for (byte i = 0; i < b.SIZE; i++) {
 			if (b.getCellAt(hpos, i).isPossible(value)) {
 				b.getCellAt(hpos, i).setImpossible(value);		
 			}
 		}
 		
 		
-		for (byte i = 0; i < b.HEIGHT; i++) {
+		for (byte i = 0; i < b.SIZE; i++) {
 			if (b.getCellAt(i, wpos).isPossible(value)) {
 				b.getCellAt(i, wpos).setImpossible(value);
 			}

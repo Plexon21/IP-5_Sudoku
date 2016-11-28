@@ -8,9 +8,9 @@ public class HiddenSingleMethod implements SolveMethod {
 
 	public boolean solve(Board b) {
 		
-		for (byte i = 0; i < b.WIDTH; i++) {
+		for (byte i = 0; i < b.SIZE; i++) {
 			
-			for (byte x = 1; x <= b.WIDTH; x++) {
+			for (byte x = 1; x <= b.SIZE; x++) {
 				
 				byte countRow = 0;
 				byte posRow = 0;
@@ -19,7 +19,7 @@ public class HiddenSingleMethod implements SolveMethod {
 				byte countBox = 0;
 				byte posBox = 0;
 				
-				for (byte j = 0; j < b.HEIGHT; j++) {
+				for (byte j = 0; j < b.SIZE; j++) {
 					
 					if (b.getRows()[i].getCells()[j].isPossible(x)) { 
 						countRow++; posRow = j;}

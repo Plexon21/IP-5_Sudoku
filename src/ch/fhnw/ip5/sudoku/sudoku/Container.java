@@ -1,11 +1,11 @@
 package ch.fhnw.ip5.sudoku.sudoku;
 
-public class Row {
+public class Container {
 	
 	private Cell[] cells;
 	
-	public Row(byte width) {
-		cells = new Cell[width];
+	public Container(byte height) {
+		cells = new Cell[height];
 	}
 	
 	public void setCell(Cell cell, byte pos) {
@@ -13,5 +13,7 @@ public class Row {
 	}
 	
 	public Cell[] getCells() { return cells; }
+	
+	public Cell getCell(byte pos) { return cells[pos]; }
 
 }
