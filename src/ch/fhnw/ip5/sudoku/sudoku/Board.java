@@ -43,7 +43,6 @@ public class Board {
 			boxes[i] = new Container(this.SIZE);
 		}
 		
-		// (1)
 		for (byte i = 0; i < values.length; i++) {
 			
 			byte hpos = (byte) (i/this.SIZE);

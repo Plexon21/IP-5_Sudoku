@@ -49,6 +49,15 @@ public class Cell {
 		this.wpos = c.wpos;
 	}
 	
+	public boolean samePossibilities(Cell c) {
+		for (int i = 0; i < values.length; i++) {
+			if (this.values[i] == CellState.POSSIBLE && c.values[i] != CellState.POSSIBLE ||
+				this.values[i] != CellState.POSSIBLE && c.values[i] == CellState.POSSIBLE) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public boolean isPossible(byte value) {
 		return values[value - 1] == CellState.POSSIBLE;

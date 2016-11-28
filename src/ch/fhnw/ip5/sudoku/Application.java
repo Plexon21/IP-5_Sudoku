@@ -8,6 +8,7 @@ import ch.fhnw.ip5.sudoku.gui.SudokuGUI;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
@@ -20,7 +21,7 @@ public class Application {
 		//"C:\\Programming\\IP-5_sudoku\\res\\parsed"
 		//"C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed"
 		//String sourceFolder = "C:\\Programming\\IP-5_sudoku\\res\\parsed";
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010054800_Archive_veryeasy_parsed";
+		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010052700_Archive_very hard_expert_parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
 		
@@ -37,6 +38,7 @@ public class Application {
 			
 			SolveMethod m1 = new NakedSingleMethod();
 			SolveMethod m2 = new HiddenSingleMethod();
+			SolveMethod m3 = new NakedSubSetMethod();
 			
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
@@ -50,6 +52,7 @@ public class Application {
 				boolean solving = true;
 				int m1counter = 0;
 				int m2counter = 0;
+				int m3counter = 0;
 				List<Board> steps = new ArrayList<Board>();
 				
 				while(solving) {
@@ -58,6 +61,9 @@ public class Application {
 						steps.add(SudokuReader.parseLine(b.createBoardString()));	
 					} else if (m2.solve(b)) {
 						m2counter++;
+						steps.add(SudokuReader.parseLine(b.createBoardString()));
+					} else if (m3.solve(b)) {
+						m3counter++;
 						steps.add(SudokuReader.parseLine(b.createBoardString()));
 					} else {
 						solving = false;
@@ -69,6 +75,7 @@ public class Application {
 				System.out.println();
 				System.out.println("Naked Single Counter  = " + m1counter);
 				System.out.println("Hidden Single Counter = " + m2counter);
+				System.out.println("Naked Subset Counter = " + m3counter);
 				System.out.println("\n\n");
 				
 				if (b.isFilled()) {
