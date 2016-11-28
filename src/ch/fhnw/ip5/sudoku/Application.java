@@ -20,7 +20,7 @@ public class Application {
 		//"C:\\Programming\\IP-5_sudoku\\res\\parsed"
 		//"C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed"
 		//String sourceFolder = "C:\\Programming\\IP-5_sudoku\\res\\parsed";
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010054800_Archive_veryeasy_parsed";
+		String sourceFolder ="C:\\Programming\\IP-5_sudoku\\res\\parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
 		
@@ -51,14 +51,15 @@ public class Application {
 				int m1counter = 0;
 				int m2counter = 0;
 				List<Board> steps = new ArrayList<Board>();
+				steps.add(new Board(b));
 				
 				while(solving) {
 					if (m1.solve(b)) {
 						m1counter++;
-						steps.add(SudokuReader.parseLine(b.createBoardString()));	
+						steps.add(new Board(b));	
 					} else if (m2.solve(b)) {
 						m2counter++;
-						steps.add(SudokuReader.parseLine(b.createBoardString()));
+						steps.add(new Board(b));
 					} else {
 						solving = false;
 					}

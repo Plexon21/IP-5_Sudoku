@@ -75,7 +75,7 @@ public class Statistics {
 								
 				FileWriter pw = new FileWriter(target, true);
 				
-				pw.write(source + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter + "\n");
+				pw.write(source + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter + "," + b.GIVENCOUNT + "\n");
 				pw.flush();
 				
 			}
@@ -87,7 +87,7 @@ public class Statistics {
 	
 	public static void main(String[] args) {
 		
-		Statistics.generateStatisticsFile("C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed");
+		Statistics.generateStatisticsFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed");
 	
 	}
 	

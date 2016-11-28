@@ -60,8 +60,8 @@ public class SudokuGUI extends JFrame implements ActionListener {
 	}
 
 	private void initColors() {
-		colors.put(UsedMethod.GIVEN, Color.BLACK);
-		colors.put(UsedMethod.NAKEDSINGLE, Color.RED);
+		colors.put(UsedMethod.GIVEN, Color.WHITE);
+		colors.put(UsedMethod.NAKEDSINGLE, Color.ORANGE);
 		colors.put(UsedMethod.HIDDENSINGLE, Color.CYAN);		
 	}
 
@@ -90,9 +90,9 @@ public class SudokuGUI extends JFrame implements ActionListener {
 				field.setHorizontalAlignment(SwingConstants.CENTER);
 				field.setBorder(BorderFactory.createLineBorder(Color.black));
 				field.setEditable(false);
-				field.setForeground(colors.get(c.getSolveMethod()));
+				field.setBackground(colors.get(c.getSolveMethod()));
 				field.setFont(new Font("Arial", 0, 24));
-				field.setForeground(colors.get(c.getSolveMethod()));
+				field.setForeground(Color.BLACK);
 				box.add(field);
 			}
 			grid.add(box);

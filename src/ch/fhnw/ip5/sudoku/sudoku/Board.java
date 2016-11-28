@@ -9,6 +9,8 @@ public class Board {
 	public final byte BOXHEIGHT;
 	public final byte BOXWIDTH;
 	
+	public final byte GIVENCOUNT;
+	
 	private Cell[][] cells;
 	private Container[] rows;
 	private Container[] columns;
@@ -43,6 +45,8 @@ public class Board {
 			boxes[i] = new Container(this.SIZE);
 		}
 		
+		byte givenCount = 0;
+		
 		// (1)
 		for (byte i = 0; i < values.length; i++) {
 			
@@ -55,6 +59,7 @@ public class Board {
 				c = new Cell(this.SIZE, hpos, wpos);
 			} else {
 				c = new Cell(this.SIZE, hpos, wpos, values[i]);
+				givenCount++;
 			}
 			
 			cells[hpos][wpos] = c;
@@ -69,12 +74,14 @@ public class Board {
 			
 			boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(c, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
 		}
+		this.GIVENCOUNT = givenCount;
 	}
 	
 	public Board(Board b) {
 		this.SIZE = b.SIZE;
 		this.BOXHEIGHT = b.BOXHEIGHT;
 		this.BOXWIDTH = b.BOXWIDTH;
+		this.GIVENCOUNT = b.GIVENCOUNT;
 		
 		cells = new Cell[this.SIZE][this.SIZE];
 		
