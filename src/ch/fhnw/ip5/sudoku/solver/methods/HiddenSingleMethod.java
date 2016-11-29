@@ -39,7 +39,7 @@ public class HiddenSingleMethod implements SolveMethod {
 					return true;
 				}
 				if (countBox == 1) {
-					Updater.updateBoard(b, b.getBoxes()[i].getCells()[posBox].getHpos(), b.getBoxes()[i].getCells()[posBox].getWpos(), x, UsedMethod.HIDDENSINGLE);
+					Updater.updateBoard(b, b.getBoxes()[i].getCells()[posBox], x, UsedMethod.HIDDENSINGLE);
 					return true;
 				}
 				

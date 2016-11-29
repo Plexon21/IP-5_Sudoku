@@ -12,22 +12,15 @@ public class NakedSubSetMethod implements SolveMethod{
 	@Override
 	public boolean solve(Board b) {
 		
-//		System.out.println("Using NakedSubSet");
-		
 		for (byte i = 2; i < b.SIZE; i++) {
-			
-//			System.out.println("subsetsize = " + i);
 			
 			if (solveForSubsetsize(b, i))
 			{
-//				b.cluesPrint();
 				return true;
 			}
 			
 		}
 		
-
-//		b.cluesPrint();
 		return false;
 		
 	}
@@ -75,15 +68,6 @@ public class NakedSubSetMethod implements SolveMethod{
 						}
 					}
 				}
-				
-//				System.out.println("Cell #" + firstCell.getHpos() + " " + firstCell.getWpos());
-//				System.out.print("Subset: ");
-//				for (byte k = 1; k < c.getCells().length; k++) {
-//					if (firstCell.isPossible(k)) {
-//						System.out.print(k + " ");
-//					}
-//				}
-//				System.out.println();
 				
 				return somethingChanged;
 			} else {

@@ -94,9 +94,60 @@ public class Board {
 			boxes[i] = new Container(this.SIZE);
 		}
 		
+		for (byte hpos = 0; hpos < this.SIZE; hpos++) {
+			for (byte wpos = 0; wpos < this.SIZE; wpos++) {
+				
+				Cell c = new Cell(b.getCellAt(hpos, wpos));
+				
+				cells[hpos][wpos] = c;
+				rows[hpos].setCell(c, wpos);
+				columns[wpos].setCell(c, hpos);
+				
+				byte hBoxstart = (byte) (hpos / BOXHEIGHT);
+				byte wBoxstart = (byte) (wpos / BOXWIDTH);
+				
+				byte hBoxPos = (byte) (hpos % BOXHEIGHT);
+				byte wBoxPos = (byte) (wpos % BOXWIDTH);
+				
+				boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(c, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
+
+			}
+		}
+	}
+	
+	public Board(byte size, byte boxheight, byte boxwidth) {
+		this.SIZE = size;
+		this.BOXHEIGHT = boxheight;
+		this.BOXWIDTH = boxwidth;
+		this.GIVENCOUNT = 0;
+		
+		cells = new Cell[this.SIZE][this.SIZE];
+		
+		rows = new Container[this.SIZE];
+		columns = new Container[this.SIZE];
+		boxes = new Container[this.SIZE];
+		
 		for (byte i = 0; i < this.SIZE; i++) {
-			for (byte j = 0; j < this.SIZE; j++) {
-				this.cells[i][j] = new Cell(b.getCellAt(i, j));
+			rows[i] = new Container(this.SIZE);
+			columns[i] = new Container(this.SIZE);
+			boxes[i] = new Container(this.SIZE);
+		}
+		
+		for (byte hpos = 0; hpos < this.SIZE; hpos++) {
+			for (byte wpos = 0; wpos < this.SIZE; wpos++) {
+				Cell c = new Cell(size, hpos, wpos);
+				
+				cells[hpos][wpos] = c;
+				rows[hpos].setCell(c, wpos);
+				columns[wpos].setCell(c, hpos);
+				
+				byte hBoxstart = (byte) (hpos / BOXHEIGHT);
+				byte wBoxstart = (byte) (wpos / BOXWIDTH);
+				
+				byte hBoxPos = (byte) (hpos % BOXHEIGHT);
+				byte wBoxPos = (byte) (wpos % BOXWIDTH);
+				
+				boxes[hBoxstart*BOXWIDTH + wBoxstart].setCell(c, (byte)(hBoxPos*BOXWIDTH + wBoxPos));
 			}
 		}
 	}
