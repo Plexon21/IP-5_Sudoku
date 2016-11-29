@@ -32,7 +32,7 @@ public class SolveAll {
 		try {
 			
 			for (String fileName : subNodes) {
-				list.addAll(SudokuReader.readFromFilename(sourceFolder + "\\" + fileName));
+		.		list.addAll(SudokuReader.readFromFilename(sourceFolder + "\\" + fileName));
 			}
 			
 			SolveMethod m1 = new NakedSingleMethod();
