@@ -62,7 +62,8 @@ public class SudokuGUI extends JFrame implements ActionListener {
 	private void initColors() {
 		colors.put(UsedMethod.GIVEN, Color.WHITE);
 		colors.put(UsedMethod.NAKEDSINGLE, Color.ORANGE);
-		colors.put(UsedMethod.HIDDENSINGLE, Color.CYAN);		
+		colors.put(UsedMethod.HIDDENSINGLE, Color.CYAN);
+		colors.put(UsedMethod.BACKTRACK, Color.RED);
 	}
 
 	public void initFrame() {

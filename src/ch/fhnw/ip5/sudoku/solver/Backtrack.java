@@ -1,6 +1,8 @@
 package ch.fhnw.ip5.sudoku.solver;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
+import ch.fhnw.ip5.sudoku.sudoku.Cell;
+import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
 public class Backtrack{
 	
@@ -26,10 +28,12 @@ public class Backtrack{
 		if (backtrack(0, 0)) {
 			for (byte i = 0; i < size; i++) {
 				for (byte j = 0; j < size; j++) {
-					if (b.getCellAt(i, j).getValue() == 0) {
-						b.getCellAt(i, j).setValue(board[i][j]);
+					Cell temp = b.getCellAt(i, j);
+					if (temp.getValue() == 0) {
+						temp.setValue(board[i][j]);
+						temp.setSolveMethod(UsedMethod.BACKTRACK);
 					} else {
-						if (b.getCellAt(i, j).getValue() != board[i][j]) {
+						if (temp.getValue() != board[i][j]) {
 							throw new IllegalStateException("Backtracking did not return a valid solution.");
 						}
 					}
