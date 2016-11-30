@@ -1,7 +1,6 @@
 package ch.fhnw.ip5.sudoku;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
