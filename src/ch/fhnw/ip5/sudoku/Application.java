@@ -20,8 +20,11 @@ public class Application {
 
 //		System.out.println("Sudoku has been solved. Believe me!");
 		
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010006800_SUD_Datafiles_exotic_parsed";
+
+//		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010006800_SUD_Datafiles_exotic_parsed";
+//		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010006900_SUD_Datafiles_evil_parsed";
 //		String sourceFolder ="C:\\Programming\\IP-5_sudoku\\res\\parsed";
+		String sourceFolder =  "C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010052700_Archive_very hard_expert_parsed";
 		
 		ArrayList<Board> list = new ArrayList<>();
 		
