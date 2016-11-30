@@ -191,6 +191,32 @@ public class Board {
 		return true;
 	}
 	
+	public boolean isSolvedCorrectly() {
+		
+		for (int i = 0; i < this.SIZE; i++) {
+			boolean[] check = new boolean[3*this.SIZE];
+			
+			for (Cell c : rows[i].getCells()) {
+				if (c.getValue() == 0) return false;
+				
+				check[c.getValue()-1] = true;
+			}
+			for (Cell c : columns[i].getCells()) {				
+				check[this.SIZE + c.getValue()-1] = true;
+			}
+			for (Cell c : boxes[i].getCells()) {				
+				check[2*this.SIZE + c.getValue()-1] = true;
+			}
+			
+			for (boolean b : check) {
+				if (!b) return false;
+			}
+		}
+		
+		return true;
+		
+	}
+	
 	public void simplePrint() {
 		System.out.println("cells:");
 		

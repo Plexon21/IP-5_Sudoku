@@ -81,7 +81,7 @@ public class Application {
 					}
 				}
 				
-				if (b.isFilled()) {
+				if (b.isSolvedCorrectly()) {
 					numberOfSolvableWithGivenMethods++;
 					lastSolved = steps.toArray(new Board[steps.size()]);
 				} else {
