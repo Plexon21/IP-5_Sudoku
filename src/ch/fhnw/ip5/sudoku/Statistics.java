@@ -2,6 +2,7 @@ package ch.fhnw.ip5.sudoku;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -19,10 +20,19 @@ public class Statistics {
 	public static void generateStatisticsFile(String sourceFolder) {
 		String targetFile = sourceFolder + "\\" + "Statistics.csv";
 
+		File target = new File(targetFile);
+
+		try (FileWriter pw = new FileWriter(target, true)) {
+			pw.write("Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets,HiddenSubsets,GivenCount\n");
+			pw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		File node = new File(sourceFolder);
 		String[] subNodes = node.list();
 		for (String fileName : subNodes) {
-			parse(new File(node, fileName), new File(targetFile));
+			parse(new File(node, fileName), target);
 		}
 	}
 
@@ -82,11 +92,26 @@ public class Statistics {
 				if (b.isFilled()) {
 					numberOfSolvableWithGivenMethods++;
 				}
+				int difficulty = 0;
+				if (source.toString().contains("veryeasy"))
+					difficulty = 1;
+				else if (source.toString().contains("easy"))
+					difficulty = 2;
+				else if (source.toString().contains("medium"))
+					difficulty = 3;
+				else if (source.toString().contains("very hard"))
+					difficulty = 5;
+				else if (source.toString().contains("hard"))
+					difficulty = 4;
+				else if (source.toString().contains("evil"))
+					difficulty = 6;
+				else if (source.toString().contains("exotic"))
+					difficulty = 7;
 
 				FileWriter pw = new FileWriter(target, true);
 
-				pw.write(source + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter + "," + m3counter
-						+ "," + m4counter + ","  +b.GIVENCOUNT + "\n");
+				pw.write(source + "," + difficulty + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter
+						+ "," + m3counter + "," + m4counter + "," + b.GIVENCOUNT + "\n");
 				pw.flush();
 
 			}
