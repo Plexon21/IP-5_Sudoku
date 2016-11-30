@@ -63,7 +63,7 @@ public class SudokuGUI extends JFrame implements ActionListener {
 		colors.put(UsedMethod.GIVEN, Color.WHITE);
 		colors.put(UsedMethod.NAKEDSINGLE, Color.ORANGE);
 		colors.put(UsedMethod.HIDDENSINGLE, Color.CYAN);
-		colors.put(UsedMethod.BACKTRACK, Color.RED);
+		colors.put(UsedMethod.BACKTRACK, Color.GREEN);
 	}
 
 	public void initFrame() {
@@ -84,7 +84,7 @@ public class SudokuGUI extends JFrame implements ActionListener {
 			box.setLayout(new GridLayout(b.BOXHEIGHT, b.BOXWIDTH));
 
 			for (byte j = 0; j < b.SIZE; j++) {
-				Cell c = b.getCellAt(i, j);
+				Cell c = b.getBoxes()[i].getCell(j);
 				String value = String.valueOf(c.getValue());
 				value = (value.equals("0")) ? "" : value;
 				final JTextField field = new JTextField(value);
