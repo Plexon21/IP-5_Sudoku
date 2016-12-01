@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
+import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
@@ -23,7 +24,8 @@ public class Statistics {
 		File target = new File(targetFile);
 
 		try (FileWriter pw = new FileWriter(target, true)) {
-			pw.write("Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets,HiddenSubsets,GivenCount\n");
+			pw.write(
+					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets,HiddenSubsets,GivenCount\n");
 			pw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,6 +63,7 @@ public class Statistics {
 			SolveMethod m2 = new HiddenSingleMethod();
 			SolveMethod m3 = new NakedSubSetMethod();
 			SolveMethod m4 = new HiddenSubSetMethod();
+			int wasBacktracked = 0;
 
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
@@ -89,8 +92,12 @@ public class Statistics {
 					}
 				}
 
-				if (b.isFilled()) {
+				if (b.isSolvedCorrectly()) {
 					numberOfSolvableWithGivenMethods++;
+				} else {
+					Backtrack.solve(b);
+					numberOfSolvableWithGivenMethods++;
+					wasBacktracked = 1;
 				}
 				int difficulty = 0;
 				if (source.toString().contains("veryeasy"))
@@ -111,7 +118,7 @@ public class Statistics {
 				FileWriter pw = new FileWriter(target, true);
 
 				pw.write(source + "," + difficulty + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter
-						+ "," + m3counter + "," + m4counter + "," + b.GIVENCOUNT + "\n");
+						+ "," + m3counter + "," + m4counter + "," + b.GIVENCOUNT + "," + wasBacktracked + "\n");
 				pw.flush();
 
 			}
