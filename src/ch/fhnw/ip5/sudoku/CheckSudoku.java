@@ -2,6 +2,8 @@ package ch.fhnw.ip5.sudoku;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
 public class CheckSudoku {
@@ -11,7 +13,7 @@ public class CheckSudoku {
 	public static void main(String[] args) {
 		
 //		Board b = new Board((byte)9,(byte)3,(byte)3);
-//		
+		
 //		for (int i = 0; i < b.SIZE; i++) {
 //			
 //			if (i != 4) {
@@ -23,67 +25,28 @@ public class CheckSudoku {
 //				}
 //			}
 //		}
+		
+//		b.getBoxes()[1].getCell((byte) 0).setValue((byte) 1);
+//		b.getBoxes()[1].getCell((byte) 2).setValue((byte) 2);
+//		b.getBoxes()[1].getCell((byte) 6).setValue((byte) 3);
+//		b.getBoxes()[1].getCell((byte) 8).setValue((byte) 4);
+//		b.getBoxes()[2].getCell((byte) 4).setValue((byte) 9);
 //		
-//		b.getBoxes()[4].getCell((byte) 0).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 0).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 0).setImpossible((byte)6);
-//		b.getBoxes()[4].getCell((byte) 0).setImpossible((byte)7);
-//		b.getBoxes()[4].getCell((byte) 0).setImpossible((byte)9);
+//		b.setupBoard();
 //		
-//		b.getBoxes()[4].getCell((byte) 1).setImpossible((byte)2);
-//		b.getBoxes()[4].getCell((byte) 1).setImpossible((byte)3);
-//		b.getBoxes()[4].getCell((byte) 1).setImpossible((byte)5);
-//		b.getBoxes()[4].getCell((byte) 1).setImpossible((byte)6);
-//		b.getBoxes()[4].getCell((byte) 1).setImpossible((byte)9);
-//		
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)2);
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)5);
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)6);
-//		b.getBoxes()[4].getCell((byte) 2).setImpossible((byte)7);
-//		
-//		b.getBoxes()[4].getCell((byte) 3).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 3).setImpossible((byte)2);
-//		b.getBoxes()[4].getCell((byte) 3).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 3).setImpossible((byte)5);
-//		
-//		b.getBoxes()[4].getCell((byte) 4).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 4).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 4).setImpossible((byte)8);
-//		
-//		b.getBoxes()[4].getCell((byte) 5).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 5).setImpossible((byte)3);
-//		b.getBoxes()[4].getCell((byte) 5).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 5).setImpossible((byte)8);
-//		
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)5);
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)6);
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)7);
-//		b.getBoxes()[4].getCell((byte) 6).setImpossible((byte)8);
-//		
-//		b.getBoxes()[4].getCell((byte) 7).setImpossible((byte)1);
-//		b.getBoxes()[4].getCell((byte) 7).setImpossible((byte)4);
-//		b.getBoxes()[4].getCell((byte) 7).setImpossible((byte)6);
-//		b.getBoxes()[4].getCell((byte) 7).setImpossible((byte)8);
-//		b.getBoxes()[4].getCell((byte) 7).setImpossible((byte)9);
-//		
-//		b.getBoxes()[4].getCell((byte) 8).setImpossible((byte)7);
-//		b.getBoxes()[4].getCell((byte) 8).setImpossible((byte)9);
-//		
+//		b.simplePrint();
 //		b.cluesPrint();
 //		
-//		SolveMethod m1 = new NakedSingleMethod();
-//		SolveMethod m2 = new HiddenSingleMethod();
-//		SolveMethod m3 = new NakedSubSetMethod();
-//		SolveMethod m4 = new HiddenSubSetMethod();
+//		BlockLineInteractionMethod m5 = new BlockLineInteractionMethod();
+//		
+//		System.out.println(m5.solve(b));
+//		
+//		b.cluesPrint();
 		
-		Board b = SudokuReader.parseLine("9 9 3 3 006049000000600500090070004100000070309000408080000005700020030003004000000590600");
-		
+		Board b = SudokuReader.parseLine("9 9 3 3 006900000004100000980006300150008900000000000003700068001500027000009600000004500");
+//		
 		Backtrack.solve(b);
-		
+//		
 		b.simplePrint();
 		b.cluesPrint();
 		
