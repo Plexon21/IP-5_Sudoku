@@ -107,8 +107,8 @@ public class Application {
 				System.out.println("Naked Single Counter  = " + m1counter);
 				System.out.println("Hidden Single Counter = " + m2counter);
 				System.out.println("Hidden Subset Counter = " + m3counter);
-				System.out.println("Block-Line Counter = " + m4counter);
-				System.out.println("Naked Subset Counter = " + m5counter);
+				System.out.println("Naked Subset Counter = " + m4counter);
+				System.out.println("Block-Line Counter = " + m5counter);
 				System.out.println("was Backtracked = " + wasBacktracked);
 				System.out.println("\n\n");
 				
