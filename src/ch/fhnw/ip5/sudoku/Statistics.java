@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
@@ -63,7 +64,7 @@ public class Statistics {
 			SolveMethod m2 = new HiddenSingleMethod();
 			SolveMethod m3 = new NakedSubSetMethod();
 			SolveMethod m4 = new HiddenSubSetMethod();
-			int wasBacktracked = 0;
+			SolveMethod m5 = new BlockLineInteractionMethod();
 
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
@@ -77,6 +78,8 @@ public class Statistics {
 				int m2counter = 0;
 				int m3counter = 0;
 				int m4counter = 0;
+				int m5counter = 0;
+				int wasBacktracked = 0;
 
 				while (solving) {
 					if (m1.solve(b)) {
@@ -87,6 +90,8 @@ public class Statistics {
 						m3counter++;
 					} else if (m4.solve(b)) {
 						m4counter++;
+					} else if (m5.solve(b)) {
+						m5counter++;
 					} else {
 						solving = false;
 					}
@@ -118,7 +123,7 @@ public class Statistics {
 				FileWriter pw = new FileWriter(target, true);
 
 				pw.write(source + "," + difficulty + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter
-						+ "," + m3counter + "," + m4counter + "," + b.GIVENCOUNT + "," + wasBacktracked + "\n");
+						+ "," + m3counter + "," + m4counter + "," + m5counter + "," + b.GIVENCOUNT + "," + wasBacktracked + "\n");
 				pw.flush();
 
 			}

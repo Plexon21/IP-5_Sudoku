@@ -8,19 +8,20 @@ import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
 public class NakedSubSetMethod implements SolveMethod{
+	private byte subsetSize = 2;
 
+	public NakedSubSetMethod(){
+	}
+	public NakedSubSetMethod(byte subsetSize){
+		this.subsetSize = subsetSize;
+	}
+	
 	@Override
 	public boolean solve(Board b) {
-		
-		for (byte i = 2; i < b.SIZE; i++) {
-			
-			if (solveForSubsetsize(b, i))
-			{
-				return true;
-			}
-			
-		}
-		
+		if (solveForSubsetsize(b, subsetSize))
+		{
+			return true;
+		}		
 		return false;
 		
 	}
