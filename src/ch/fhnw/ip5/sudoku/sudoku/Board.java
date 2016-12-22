@@ -1,10 +1,12 @@
 package ch.fhnw.ip5.sudoku.sudoku;
 
+import java.util.UUID;
+
 import ch.fhnw.ip5.sudoku.solver.Updater;
 
 public class Board {
-	
-	public final byte SIZE;
+	public final UUID id = UUID.randomUUID();	
+	public final byte SIZE;	
 	
 	public final byte BOXHEIGHT;
 	public final byte BOXWIDTH;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.StartPos;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
@@ -16,6 +17,9 @@ import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
+
+import com.mathworks.engine.EngineException;
+import com.mathworks.engine.MatlabEngine;
 
 public class Statistics_Subsets_Split {
 
@@ -25,8 +29,12 @@ public class Statistics_Subsets_Split {
 		File target = new File(targetFile);
 
 		try (FileWriter pw = new FileWriter(target, true)) {
+			/*pw.write(
+					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,NakedSubsets_Size5,HiddenSubsets_Size5,NakedSubsets_Size6,HiddenSubsets_Size6,NakedSubsets_Size7,HiddenSubsets_Size7,NakedSubsets_Size8,HiddenSubsets_Size8,NakedSubsets_Size9,HiddenSubsets_Size9,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,wasBacktracked\n");
+			*/
 			pw.write(
-					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,NakedSubsets_Size5,HiddenSubsets_Size5,NakedSubsets_Size6,HiddenSubsets_Size6,NakedSubsets_Size7,HiddenSubsets_Size7,NakedSubsets_Size8,HiddenSubsets_Size8,NakedSubsets_Size9,HiddenSubsets_Size9,GivenCount,wasBacktracked\n");
+					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,wasBacktracked\n");
+			
 			pw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -60,14 +68,24 @@ public class Statistics_Subsets_Split {
 
 			list.addAll(SudokuReader.readFromFile(source));
 
-			SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
-					new NakedSubSetMethod((byte) 2), new NakedSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
-					new NakedSubSetMethod((byte) 5), new NakedSubSetMethod((byte) 6), new NakedSubSetMethod((byte) 7),
-					new NakedSubSetMethod((byte) 8), new NakedSubSetMethod((byte) 9), new HiddenSubSetMethod((byte) 2),
-					new HiddenSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 4),
-					new HiddenSubSetMethod((byte) 5), new HiddenSubSetMethod((byte) 6),
-					new HiddenSubSetMethod((byte) 7), new HiddenSubSetMethod((byte) 8),
-					new HiddenSubSetMethod((byte) 9), new BlockLineInteractionMethod() };
+			/*SolveMethod[] methods = new SolveMethod[] { 
+					new NakedSingleMethod(), new HiddenSingleMethod(),
+					new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2),
+					new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3),
+					new NakedSubSetMethod((byte) 4), new HiddenSubSetMethod((byte) 4),
+					new NakedSubSetMethod((byte) 5), new HiddenSubSetMethod((byte) 5),
+					new NakedSubSetMethod((byte) 6), new HiddenSubSetMethod((byte) 6),
+					new NakedSubSetMethod((byte) 7), new HiddenSubSetMethod((byte) 7),
+					new NakedSubSetMethod((byte) 8), new HiddenSubSetMethod((byte) 8),
+					new NakedSubSetMethod((byte) 9), new HiddenSubSetMethod((byte) 9),					 
+					new BlockLineInteractionMethod() };*/
+			
+			SolveMethod[] methods = new SolveMethod[] { 
+					new NakedSingleMethod(), new HiddenSingleMethod(),
+					new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2),
+					new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3),
+					new NakedSubSetMethod((byte) 4), new HiddenSubSetMethod((byte) 4),			 
+					new BlockLineInteractionMethod() };
 
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfSudokus = list.size();
@@ -76,8 +94,18 @@ public class Statistics_Subsets_Split {
 
 				b.setupBoard();
 
+				int[] startPos = StartPos.check(b);
+				int total = 0;
+				for (int i = 1; i <= b.SIZE; i++) {
+					//System.out.print("Number " + i + ": " + startPos[i - 1] + ", ");
+					total += startPos[i - 1];
+				}
+
+				//System.out.println("Total: " + total);
+
 				boolean solving = true;
-				int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				//int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				int[] solveCounter = new int[] {  0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 				/*
 				 * int m1counter = 0; int m2counter = 0;
@@ -154,12 +182,32 @@ public class Statistics_Subsets_Split {
 
 				FileWriter pw = new FileWriter(target, true);
 
-				pw.write(source + "," + difficulty + "," + (b.isFilled() ? "1," : "0,") + solveCounter[0] + ","
-						+ solveCounter[1] + "," + solveCounter[2] + "," + solveCounter[3] + "," + solveCounter[18] + ","
-						+ solveCounter[4] + "," + solveCounter[5] + "," + solveCounter[6] + "," + solveCounter[7] + ","
-						+ solveCounter[8] + "," + solveCounter[9] + "," + solveCounter[10] + "," + solveCounter[11]
-						+ "," + solveCounter[12] + "," + solveCounter[13] + "," + solveCounter[14] + ","
-						+ solveCounter[15] + "," + solveCounter[16] + "," + solveCounter[17] + "," + b.GIVENCOUNT + ","
+				/*pw.write(source + "," + difficulty + "," 
+						+ (b.isFilled() ? "1," : "0,") 
+						+ solveCounter[0] + ","	+ solveCounter[1] + "," 
+						+ solveCounter[2] + "," + solveCounter[3] + "," 
+						+ solveCounter[18] + ","
+						+ solveCounter[4] + "," + solveCounter[5] + "," 
+						+ solveCounter[6] + "," + solveCounter[7] + ","
+						+ solveCounter[8] + "," + solveCounter[9] + "," 
+						+ solveCounter[10] + "," + solveCounter[11]+ "," 
+						+ solveCounter[12] + "," + solveCounter[13] + "," 
+						+ solveCounter[14] + "," + solveCounter[15] + "," 
+						+ solveCounter[16] + "," + solveCounter[17] + "," 
+						+ b.GIVENCOUNT + ","
+						+ startPos[0] + "," + startPos[1] + "," + startPos[2] + "," + startPos[3] + "," + startPos[4]+ ","
+						+ startPos[5] + "," + startPos[6] + "," + startPos[7] + "," + startPos[8] + ","
+						+ wasBacktracked + "\n");*/
+				pw.write(source + "," + difficulty + "," 
+						+ (b.isFilled() ? "1," : "0,") 
+						+ solveCounter[0] + ","	+ solveCounter[1] + "," 
+						+ solveCounter[2] + "," + solveCounter[3] + "," 
+						+ solveCounter[8] + ","
+						+ solveCounter[4] + "," + solveCounter[5] + "," 
+						+ solveCounter[6] + "," + solveCounter[7] + ","
+						+ b.GIVENCOUNT + ","
+						+ startPos[0] + "," + startPos[1] + "," + startPos[2] + "," + startPos[3] + "," + startPos[4]+ ","
+						+ startPos[5] + "," + startPos[6] + "," + startPos[7] + "," + startPos[8] + ","
 						+ wasBacktracked + "\n");
 				pw.flush();
 
