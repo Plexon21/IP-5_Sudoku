@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
-import ch.fhnw.ip5.sudoku.solver.StartPos;
+import ch.fhnw.ip5.sudoku.solver.Counter;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
@@ -94,14 +94,20 @@ public class Statistics_Subsets_Split {
 
 				b.setupBoard();
 
-				int[] startPos = StartPos.check(b);
+				int[] startPos = Counter.check(b);
 				int total = 0;
 				for (int i = 1; i <= b.SIZE; i++) {
 					//System.out.print("Number " + i + ": " + startPos[i - 1] + ", ");
 					total += startPos[i - 1];
 				}
+				
+				int possibilities[] = Counter.countPossibilities(b);
+				int totalPossibilities = 0;
+				for(int i=1;i<=b.SIZE;i++){
+					totalPossibilities += possibilities[i-1];
+				}
 
-				//System.out.println("Total: " + total);
+				System.out.println("Possibilities: " + totalPossibilities);
 
 				boolean solving = true;
 				//int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
