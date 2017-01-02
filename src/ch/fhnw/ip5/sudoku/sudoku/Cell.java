@@ -76,6 +76,12 @@ public class Cell {
 		possibleValuesCount = 0;
 		this.finalValue = value;
 	}
+	
+	public void removeValue() {
+		Arrays.fill(values, CellState.POSSIBLE);
+		this.possibleValuesCount = (byte)values.length;
+		finalValue = 0;
+	}
 
 	public UsedMethod getSolveMethod() {
 		return this.solvedWith;

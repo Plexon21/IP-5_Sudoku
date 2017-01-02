@@ -1,7 +1,9 @@
 package ch.fhnw.ip5.sudoku.generator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import ch.fhnw.ip5.sudoku.solver.Solver;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
@@ -27,18 +29,71 @@ public class Generator {
 			}
 		}
 		
-		for (Cell c : setCells) {
-			for (Cell x : Flipper.getFlippedCellsOrtho(b, c)) {
-				 x.setValue(sol.getCellAt(x.getHpos(), x.getWpos()).getValue());
-			}
-			for (Cell x : Flipper.getFlippedCellsDia(b, c)) {
-				 x.setValue(sol.getCellAt(x.getHpos(), x.getWpos()).getValue());
-			}
-		}
+		recursiveAdd(b, sol, difficulty, setCells);
 		
 		b.setupBoard();
 		
 		return b;		
+		
+	}
+	
+	private static boolean recursiveAdd(Board b, Board sol, Difficulty difficulty, List<Cell> setCells) {
+		
+		Collections.shuffle(setCells, new Random(System.nanoTime()));
+		List<Cell> newList = new ArrayList<>(setCells);
+		
+		for (Cell c : setCells) {
+			for (Cell x : Flipper.getFlippedCellsDia(b, c)) {
+				
+				if (x.getValue() == 0) {
+					//not yet set
+					
+					x.setValue(sol.getCellAt(x.getHpos(), x.getWpos()).getValue());
+					
+					int diff = Solver.getDifficulty(b).ordinal();
+					
+					if (diff > difficulty.ordinal()) {
+						newList.add(x);
+						if (recursiveAdd(b, sol, difficulty, newList)) {
+							return true;
+						}
+						newList.remove(x);
+					} else if (diff == difficulty.ordinal()) {
+						return true;
+					}
+					
+					x.removeValue();
+					
+				}
+				
+			}
+			for (Cell x : Flipper.getFlippedCellsOrtho(b, c)) {
+
+				if (x.getValue() == 0) {
+					//not yet set
+					
+					x.setValue(sol.getCellAt(x.getHpos(), x.getWpos()).getValue());
+					
+					int diff = Solver.getDifficulty(b).ordinal();
+					
+					if (diff > difficulty.ordinal()) {
+						newList.add(x);
+						if (recursiveAdd(b, sol, difficulty, newList)) {
+							return true;
+						}
+						newList.remove(x);
+					} else if (diff == difficulty.ordinal()) {
+						return true;
+					}
+					
+					x.removeValue();
+					
+				}
+				
+			}
+		}
+		
+		return false;
 		
 	}
 
