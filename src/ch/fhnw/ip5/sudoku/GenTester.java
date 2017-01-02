@@ -3,6 +3,7 @@ package ch.fhnw.ip5.sudoku;
 import ch.fhnw.ip5.sudoku.generator.Generator;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.Solver;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Difficulty;
 
@@ -10,7 +11,7 @@ public class GenTester {
 	
 	public static void main(String[] args) {
 		
-		Board b = SudokuReader.parseLine("9 9 3 3 005000200090004030306000508010060800000982000000070020801000605060200070004000100");
+		Board b = SudokuReader.parseLine("9 9 3 3 000000240030100000000000060200056700080000000000040000000300001607000000400800000");
 
 		b.simplePrint();
 		
@@ -20,9 +21,17 @@ public class GenTester {
 		
 		sol.simplePrint();
 		
-		Board populiert = Generator.generateBoard(b, sol, Difficulty.MEDIUM);
+		Difficulty diff = Solver.getDifficulty(b);
 		
-		populiert.simplePrint();
+		Board populiert = Generator.generateBoard(b, sol, diff);
+		
+		System.out.println("Difficulty searched for : " + diff);
+		
+		if (populiert != null) {
+			populiert.simplePrint();
+		} else {
+			System.out.println("Found no Solution");
+		}
 		
 	}
 	
