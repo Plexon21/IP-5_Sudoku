@@ -21,7 +21,7 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import com.mathworks.engine.EngineException;
 import com.mathworks.engine.MatlabEngine;
 
-public class Statistics_Subsets_Split {
+public class Statistics_Neuroph {
 
 	public static void generateStatisticsFile(String sourceFolder) {
 		String targetFile = sourceFolder + "\\" + "Statistics.csv";
@@ -169,21 +169,21 @@ public class Statistics_Subsets_Split {
 					numberOfSolvableWithGivenMethods++;
 					wasBacktracked = 1;
 				}
-				int difficulty = 0;
+				int[] difficulty = new int[7];
 				if (source.toString().contains("veryeasy") || source.toString().contains("S1"))
-					difficulty = 1;
+					difficulty[0]=1;
 				else if (source.toString().contains("easy") || source.toString().contains("S2"))
-					difficulty = 2;
+					difficulty[1]=1;
 				else if (source.toString().contains("medium") || source.toString().contains("S3"))
-					difficulty = 3;
+					difficulty[2]=1;
 				else if (source.toString().contains("S6"))
-					difficulty = 5;
+					difficulty[4]=1;
 				else if (source.toString().contains("very hard_expert") || source.toString().contains("S7"))
-					difficulty = 6;
+					difficulty[5]=1;
 				else if (source.toString().contains("hard") || source.toString().contains("S5"))
-					difficulty = 4;
+					difficulty[3]=1;
 				else if (source.toString().contains("evil") || source.toString().contains("exotic"))
-					difficulty = 7;
+					difficulty[6]=1;
 
 				FileWriter pw = new FileWriter(target, true);
 
@@ -225,8 +225,9 @@ public class Statistics_Subsets_Split {
 						+ b.GIVENCOUNT + ","
 						+ startPos[0] + "," + startPos[1] + "," + startPos[2] + "," + startPos[3] + "," + startPos[4]+ ","
 						+ startPos[5] + "," + startPos[6] + "," + startPos[7] + "," + startPos[8] + ","
-						+ totalPossibilities + ","
-						+ wasBacktracked +","+ difficulty+ "\n");
+						+ totalPossibilities + ","+ wasBacktracked +","
+						+ difficulty[0]+","+ difficulty[1]+","+ difficulty[2]+","+ difficulty[3]+","
+						+ difficulty[4]+","+ difficulty[5]+","+ difficulty[6]+ "\n");
 				pw.flush();
 
 			}
@@ -237,7 +238,7 @@ public class Statistics_Subsets_Split {
 
 	public static void main(String[] args) {
 
-		Statistics_Subsets_Split
+		Statistics_Neuroph
 				.generateStatisticsFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
 
 	}
