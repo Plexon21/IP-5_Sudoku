@@ -35,7 +35,7 @@ public class NeuralNetwork {
 		BackPropagation rule = network.getLearningRule();
 		rule.setMaxIterations(500);
 		myNet.fullSet = new DataSet(22, 7);
-		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
+		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\KTI_parsed\\S1");
 		
 		Normalizer norm = new MaxNormalizer();
 		norm.normalize(myNet.fullSet);
