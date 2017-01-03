@@ -51,7 +51,6 @@ public class MyNeuralNetwork implements LearningEventListener {
 
 	public void parseAllFrom(String sourceFolder) {
 
-		String columnNames = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked\n";
 		fullSet = new DataSet(inputNodes, outputNodes);
 
 		File node = new File(sourceFolder);
@@ -179,6 +178,10 @@ public class MyNeuralNetwork implements LearningEventListener {
 		rule.addListener(this);
 		network.learn(trainingSet);
 		testNetwork(network, testSet);
+		DataSetRow row = fullSet.getRowAt(0);
+		System.out.println(row.toCSV());
+		fullSet.save("C:\\Programming\\IP-5_sudoku\\res\\fullset.txt");
+		
 	}
 
 	public void trainNetwork(MultiLayerPerceptron network, DataSet trainingSet) {
