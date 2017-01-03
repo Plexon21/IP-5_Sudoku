@@ -15,15 +15,9 @@ public class GenTester {
 
 		b.simplePrint();
 		
-		Board sol = new Board(b);
-		
-		Backtrack.solve(sol);
-		
-		sol.simplePrint();
-		
 		Difficulty diff = Solver.getDifficulty(b);
 		
-		Board populiert = Generator.generateBoard(b, sol, diff);
+		Board populiert = Generator.generateBoard(b, diff);
 		
 		System.out.println("Difficulty searched for : " + diff);
 		

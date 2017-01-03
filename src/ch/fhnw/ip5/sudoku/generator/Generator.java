@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.Solver;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
@@ -12,9 +13,17 @@ import ch.fhnw.ip5.sudoku.sudoku.Difficulty;
 
 public class Generator {
 	
-	public static Board generateBoard(Board ori, Board sol, Difficulty difficulty) {
+	public static Board generateBoard(Board ori, Difficulty difficulty) {
 		
 		Board b = new Board(ori);
+		
+		Permutation.permutateBoard(b);
+		
+		Board sol = new Board(b);
+		
+		Solver.solve(sol);
+		
+		sol.simplePrint();
 		
 		if (Solver.getDifficulty(b).ordinal() < difficulty.ordinal()) return null;
 		
