@@ -18,9 +18,6 @@ import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-import com.mathworks.engine.EngineException;
-import com.mathworks.engine.MatlabEngine;
-
 public class Statistics_Subsets_Split {
 
 	public static void generateStatisticsFile(String sourceFolder) {
