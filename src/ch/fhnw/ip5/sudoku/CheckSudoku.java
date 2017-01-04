@@ -4,6 +4,8 @@ import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
 public class CheckSudoku {
@@ -12,19 +14,50 @@ public class CheckSudoku {
 	
 	public static void main(String[] args) {
 		
-//		Board b = new Board((byte)9,(byte)3,(byte)3);
+		Board b = new Board((byte)9,(byte)3,(byte)3);
 		
-//		for (int i = 0; i < b.SIZE; i++) {
+		b.getCellAt((byte)0, (byte)2).setValue((byte)3);
+		b.getCellAt((byte)0, (byte)5).setValue((byte)2);
+		b.getCellAt((byte)0, (byte)6).setValue((byte)7);
+		
+		b.getCellAt((byte)3, (byte)0).setValue((byte)9);
+		b.getCellAt((byte)4, (byte)3).setValue((byte)9);
+		b.getCellAt((byte)5, (byte)7).setValue((byte)9);
+		
+		b.getCellAt((byte)6, (byte)4).setValue((byte)9);
+		b.getCellAt((byte)7, (byte)2).setValue((byte)5);
+		b.getCellAt((byte)7, (byte)5).setValue((byte)1);
+		b.getCellAt((byte)7, (byte)6).setValue((byte)4);
+		
+		b.setupBoard();
+		
+		SolveMethod m = new XWingMethod();
+		
+		b.simplePrint();
+		b.cluesPrint();
+		
+		if (m.solve(b)) {
+			System.out.println("Worked");
+		}
+		
+		b.simplePrint();
+		b.cluesPrint();
+		
+		
+		
+//		for (int k = 0; k < b.SIZE; k++) {
 //			
-//			if (i != 4) {
+//			if (k != 8) {
 //				
-//				for (byte j = 0; j < b.SIZE; j++) {
-//					for (byte k = 0; k < b.SIZE; k++) {
-//						b.getBoxes()[i].getCell(j).setImpossible((byte)(k+1));
+//				for (byte i = 0; i < b.SIZE; i++) {
+//					for (byte j = 0; j < b.SIZE; j++) {
+//						b.getCellAt(i, j).setImpossible((byte)(k+1));
 //					}
 //				}
 //			}
 //		}
+		
+
 		
 //		b.getBoxes()[1].getCell((byte) 0).setValue((byte) 1);
 //		b.getBoxes()[1].getCell((byte) 2).setValue((byte) 2);
@@ -43,12 +76,12 @@ public class CheckSudoku {
 //		
 //		b.cluesPrint();
 		
-		Board b = SudokuReader.parseLine("9 9 3 3 006900000004100000980006300150008900000000000003700068001500027000009600000004500");
-//		
-		Backtrack.solve(b);
-//		
-		b.simplePrint();
-		b.cluesPrint();
+//		Board b = SudokuReader.parseLine("9 9 3 3 006900000004100000980006300150008900000000000003700068001500027000009600000004500");
+////		
+//		Backtrack.solve(b);
+////		
+//		b.simplePrint();
+//		b.cluesPrint();
 		
 //		b.setupBoard();
 //		System.out.println(b.createBoardString());
