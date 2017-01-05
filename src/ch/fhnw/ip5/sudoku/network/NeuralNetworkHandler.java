@@ -261,8 +261,9 @@ public class NeuralNetworkHandler implements LearningEventListener {
 						startPos[8], totalPossibilities, wasBacktracked };
 				double[] outputValues = new double[] { difficulty[0], difficulty[1], difficulty[2], difficulty[3],
 						difficulty[4], difficulty[5], difficulty[6], };
-				fullSet.addRow(inputValues, outputValues);				
+				fullSet.addRow(inputValues, outputValues);		
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
