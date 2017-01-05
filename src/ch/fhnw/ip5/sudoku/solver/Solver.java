@@ -2,6 +2,7 @@ package ch.fhnw.ip5.sudoku.solver;
 
 import java.util.Random;
 
+import ch.fhnw.ip5.sudoku.network.NeuralNetworkHandler;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
@@ -12,6 +13,15 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Difficulty;
 
 public class Solver {
+	
+	private NeuralNetworkHandler nnh;
+	
+	public Solver()  {
+		
+		nnh = new NeuralNetworkHandler();
+		nnh.trainNetwork("C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
+		
+	}
 	
 	public static void solve(Board b) {
 		
@@ -44,13 +54,21 @@ public class Solver {
 		}
 	}
 	
-	public static Difficulty getDifficulty(Board b) {
+	public Difficulty getDifficulty(Board b) {
 		//THIS IS JUST TO TEST THE GENERATOR
 		//TODO Implement
-		Random rng = new Random();
-		Difficulty[] diffs = Difficulty.values();
+//		Random rng = new Random();
+//		Difficulty[] diffs = Difficulty.values();
+//		
+//		return diffs[rng.nextInt(diffs.length)];
 		
-		return diffs[rng.nextInt(diffs.length)];
+		int diff = nnh.predictBoard(new Board(b));
+		
+		if (diff == -1) {
+			return Difficulty.EVIL;
+		} else {
+			return Difficulty.values()[diff];
+		}
 	}
 
 }
