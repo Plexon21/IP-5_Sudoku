@@ -15,17 +15,24 @@ public class GenTester {
 
 		b.simplePrint();
 		
-		Difficulty diff = Solver.getDifficulty(b);
+		Difficulty diff = Difficulty.MEDIUM;
 		
-		Board populiert = Generator.generateBoard(b, diff);
+		Solver solver = new Solver();
+		
+		System.out.println("Solver trained");
+		
+		Board populiert = Generator.generateBoard(solver, b, diff);
 		
 		System.out.println("Difficulty searched for : " + diff);
 		
-		if (populiert != null) {
-			populiert.simplePrint();
-		} else {
-			System.out.println("Found no Solution");
+		while(populiert == null) {
+			b.simplePrint();
+			populiert = Generator.generateBoard(solver, b, diff);
 		}
+		
+		System.out.println(solver.getDifficulty(b));
+		b.simplePrint();
+//		System.out.println("Found no Solution");
 		
 	}
 	

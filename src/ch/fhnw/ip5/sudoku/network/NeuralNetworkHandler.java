@@ -70,7 +70,7 @@ public class NeuralNetworkHandler {
 		network.calculate();
 
 		double[] output = network.getOutput();
-		return maxOutput(output)+1;
+		return maxOutput(output);
 
 	}
 
