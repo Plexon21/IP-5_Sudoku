@@ -6,8 +6,11 @@ import java.util.ArrayList;
 
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.events.LearningEvent;
+import org.neuroph.core.events.LearningEventListener;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.data.norm.MaxMinNormalizer;
 import org.neuroph.util.data.norm.MaxNormalizer;
 import org.neuroph.util.data.norm.Normalizer;
@@ -21,9 +24,10 @@ import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-public class NeuralNetworkHandler {
+public class NeuralNetworkHandler implements LearningEventListener {
 
 	public DataSet fullSet;
 	public int[] countAll = new int[8];
@@ -38,16 +42,28 @@ public class NeuralNetworkHandler {
 		trainNetwork("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
 	}
 
+	@Override
+	public void handleLearningEvent(LearningEvent event) {
+		BackPropagation bp = (BackPropagation) event.getSource();
+
+		if (event.getEventType() != LearningEvent.Type.LEARNING_STOPPED)
+			System.out.println(bp.getCurrentIteration() + ". iteration : " + bp.getTotalNetworkError());
+
+	}
+
 	public void trainNetwork(String path) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		network = new MultiLayerPerceptron(21, 50, 7);
+		network = new MultiLayerPerceptron(22, 50, 7);
 		BackPropagation rule = network.getLearningRule();
 		rule.setMaxIterations(500);
-		myNet.fullSet = new DataSet(21, 7);
+		myNet.fullSet = new DataSet(22, 7);
 		myNet.sudokusToFile(path);
 
 		Normalizer norm = new MaxNormalizer();
 		norm.normalize(myNet.fullSet);
+		
+		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
+		myNet.fullSet.setColumnNames(names);
 
 		int trainingSetPercentage = 70;
 
@@ -70,22 +86,27 @@ public class NeuralNetworkHandler {
 		network.calculate();
 
 		double[] output = network.getOutput();
+
 		return maxOutput(output);
 
 	}
 
 	public static void main(String[] args) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		MultiLayerPerceptron network = new MultiLayerPerceptron(21, 50, 7);
+		MultiLayerPerceptron network = new MultiLayerPerceptron(22, 50, 7);
 		BackPropagation rule = network.getLearningRule();
-		rule.setMaxIterations(500);
-		myNet.fullSet = new DataSet(21, 7);
-		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\KTI_parsed");
+		rule.setMaxIterations(2000);
+		rule.addListener(myNet);
+		rule.setLearningRate(0.1);
+		myNet.fullSet = new DataSet(22, 7);
+		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
 
 		Normalizer norm = new MaxNormalizer();
 		norm.normalize(myNet.fullSet);
 
 		int trainingSetPercentage = 70;
+		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
+		myNet.fullSet.setColumnNames(names);
 
 		DataSet[] sets = myNet.fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
 		DataSet training = sets[0];
@@ -123,7 +144,7 @@ public class NeuralNetworkHandler {
 		SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
 				new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2), new BlockLineInteractionMethod(),
 				new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
-				new HiddenSubSetMethod((byte) 4) };
+				new HiddenSubSetMethod((byte) 4), new XWingMethod() };
 
 		b.setupBoard();
 
@@ -140,7 +161,7 @@ public class NeuralNetworkHandler {
 		}
 
 		boolean solving = true;
-		int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		int wasBacktracked = 0;
 
 		int solveMethod = 0;
@@ -163,8 +184,8 @@ public class NeuralNetworkHandler {
 
 		double toSolveCount = b.SIZE * b.SIZE - b.GIVENCOUNT;
 		double[] inputValues = new double[] { (double) solveCounter[0] / toSolveCount,
-				(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], solveCounter[8],
-				solveCounter[4], solveCounter[5], solveCounter[6], solveCounter[7], b.GIVENCOUNT, startPos[0],
+				(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], 
+				solveCounter[4], solveCounter[5], solveCounter[6], solveCounter[7],solveCounter[8], solveCounter[9], b.GIVENCOUNT, startPos[0],
 				startPos[1], startPos[2], startPos[3], startPos[4], startPos[5], startPos[6], startPos[7], startPos[8],
 				totalPossibilities, wasBacktracked };
 		return new DataSetRow(inputValues);
@@ -179,7 +200,7 @@ public class NeuralNetworkHandler {
 			SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
 					new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2), new BlockLineInteractionMethod(),
 					new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
-					new HiddenSubSetMethod((byte) 4) };
+					new HiddenSubSetMethod((byte) 4), new XWingMethod() };
 
 			for (Board b : list) {
 				b.setupBoard();
@@ -197,7 +218,7 @@ public class NeuralNetworkHandler {
 				}
 
 				boolean solving = true;
-				int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+				int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 				int wasBacktracked = 0;
 
 				int solveMethod = 0;
@@ -235,13 +256,13 @@ public class NeuralNetworkHandler {
 
 				double toSolveCount = b.SIZE * b.SIZE - b.GIVENCOUNT;
 				double[] inputValues = new double[] { (double) solveCounter[0] / toSolveCount,
-						(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], solveCounter[8],
-						solveCounter[4], solveCounter[5], solveCounter[6], solveCounter[7], b.GIVENCOUNT, startPos[0],
+						(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], solveCounter[4],
+						solveCounter[5], solveCounter[6], solveCounter[7], solveCounter[8],solveCounter[9], b.GIVENCOUNT, startPos[0],
 						startPos[1], startPos[2], startPos[3], startPos[4], startPos[5], startPos[6], startPos[7],
 						startPos[8], totalPossibilities, wasBacktracked };
 				double[] outputValues = new double[] { difficulty[0], difficulty[1], difficulty[2], difficulty[3],
 						difficulty[4], difficulty[5], difficulty[6], };
-				fullSet.addRow(inputValues, outputValues);
+				fullSet.addRow(inputValues, outputValues);				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -250,22 +271,17 @@ public class NeuralNetworkHandler {
 
 	public void testNeuralNetwork(MultiLayerPerceptron neuralNet, DataSet testSet) {
 
-		System.out.println("**************************************************");
-		System.out.println("**********************RESULT**********************");
-		System.out.println("**************************************************");
+		System.out.println("RESULT:");
 		for (DataSetRow testSetRow : testSet.getRows()) {
 			neuralNet.setInput(testSetRow.getInput());
 			neuralNet.calculate();
 
-			// Finding network output
 			double[] networkOutput = neuralNet.getOutput();
 			int predicted = maxOutput(networkOutput);
 
-			// Finding actual output
 			double[] networkDesiredOutput = testSetRow.getDesiredOutput();
 			int ideal = maxOutput(networkDesiredOutput);
 
-			// Colecting data for network evaluation
 			keepScore(predicted, ideal);
 		}
 		printConfMat();
@@ -274,7 +290,6 @@ public class NeuralNetworkHandler {
 		System.out.println("Correctly predicted cases: " + this.countCorrect[7] + ". ");
 		System.out.println(
 				"Incorrectly predicted cases: " + (this.countAll[7] - this.countCorrect[7] - unpredicted) + ". ");
-		System.out.println("Unrecognized cases: " + unpredicted + ". ");
 		double percentTotal = (double) this.countCorrect[7] * 100 / (double) this.countAll[7];
 		System.out.println("Predicted correctly: " + percentTotal + "%. ");
 
@@ -302,10 +317,6 @@ public class NeuralNetworkHandler {
 				max = array[i];
 			}
 		}
-		// If maximum is less than 0.5, that prediction will not count.
-		if (max - second < 0.2) {
-			return -1;
-		}
 		return index;
 	}
 
@@ -318,9 +329,6 @@ public class NeuralNetworkHandler {
 		if (prediction == ideal) {
 			countCorrect[ideal]++;
 			countCorrect[7]++;
-		}
-		if (prediction == -1) {
-			unpredicted++;
 		}
 	}
 
