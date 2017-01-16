@@ -13,6 +13,7 @@ import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
+import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
 public class Application {
@@ -21,7 +22,7 @@ public class Application {
 
 		// System.out.println("Sudoku has been solved. Believe me!");
 
-		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed\\06010052700_Archive_very hard_expert_parsed";
+		String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed\\S1";
 		// String sourceFolder =
 		// "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG
 		// Sudoku\\parsed\\06010006900_SUD_Datafiles_evil_parsed";
@@ -63,6 +64,8 @@ public class Application {
 			SolveMethod m4_Size9 = new HiddenSubSetMethod((byte) 9);
 
 			SolveMethod m5 = new BlockLineInteractionMethod();
+			
+			SolveMethod m6 = new XWingMethod();
 
 			int numberOfSolvableWithGivenMethods = 0;
 			int numberOfBacktrackedSudokus = 0;
@@ -95,6 +98,7 @@ public class Application {
 				int m4_Size8counter = 0;
 				int m3_Size9counter = 0;
 				int m4_Size9counter = 0;
+				int m6counter = 0;
 				boolean wasBacktracked = false;
 
 				List<Board> steps = new ArrayList<Board>();
@@ -141,6 +145,8 @@ public class Application {
 						m3_Size9counter++;
 					} else if (m4_Size9.solve(b)) {
 						m4_Size9counter++;
+					} else if (m6.solve(b)) {
+						m6counter++;
 					} else {
 						solving = false;
 					}
@@ -150,16 +156,18 @@ public class Application {
 					numberOfSolvableWithGivenMethods++;
 					lastSolved = steps.toArray(new Board[steps.size()]);
 				} else {
-					Backtrack.solve(b);
-					// steps.add(new Board(b));
-					if (!b.isSolvedCorrectly()) {
-						throw new IllegalStateException("SOMETHING IS WRONG IMPLEMENTED");
+					b.simplePrint();
+					if (Backtrack.solve(b)) {
+						steps.add(new Board(b));
+						lastSolved = steps.toArray(new Board[steps.size()]);
+						numberOfBacktrackedSudokus++;
+						wasBacktracked = true;
 					}
-					lastSolved = steps.toArray(new Board[steps.size()]);
-					numberOfSolvableWithGivenMethods++;
-					numberOfBacktrackedSudokus++;
-					wasBacktracked = true;
-				}
+					
+					if (!b.isSolvedCorrectly()) {
+//						b.simplePrint();
+					}
+ 				}
 
 				System.out.println("Result board");
 				b.simplePrint();
@@ -184,6 +192,7 @@ public class Application {
 				System.out.println("Naked Subset Size 8 Counter = " + m4_Size8counter);
 				System.out.println("Hidden Subset Size 9 Counter = " + m3_Size9counter);
 				System.out.println("Naked Subset Size 9 Counter = " + m4_Size9counter);
+				System.out.println("XWing Counter = " + m6counter);
 				
 				System.out.println("was Backtracked = " + wasBacktracked);
 				System.out.println("\n\n");

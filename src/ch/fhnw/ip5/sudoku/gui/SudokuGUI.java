@@ -91,7 +91,8 @@ public class SudokuGUI extends JFrame implements ActionListener {
 				field.setHorizontalAlignment(SwingConstants.CENTER);
 				field.setBorder(BorderFactory.createLineBorder(Color.black));
 				field.setEditable(false);
-				field.setBackground(colors.get(c.getSolveMethod()));
+				int ord = c.getSolveMethod().ordinal();
+				field.setBackground(colors.get(ord));
 				field.setFont(new Font("Arial", 0, 24));
 				field.setForeground(Color.BLACK);
 				box.add(field);

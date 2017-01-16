@@ -26,7 +26,7 @@ public class Statistics {
 
 		try (FileWriter pw = new FileWriter(target, true)) {
 			pw.write(
-					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets,HiddenSubsets,GivenCount\n");
+					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets,HiddenSubsets,Blockline,GivenCount,wasBacktracked\n");
 			pw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -122,8 +122,8 @@ public class Statistics {
 
 				FileWriter pw = new FileWriter(target, true);
 
-				pw.write(source + "," + difficulty + "," + (b.isFilled() ? "1," : "0,") + m1counter + "," + m2counter
-						+ "," + m3counter + "," + m4counter + "," + m5counter + "," + b.GIVENCOUNT + "," + wasBacktracked + "\n");
+				pw.write(source + ",\t" + difficulty + ",\t" + (b.isFilled() ? "1,\t" : "0,\t") + m1counter + ",\t" + m2counter
+						+ ",\t" + m3counter + ",\t" + m4counter + ",\t" + m5counter + ",\t" + b.GIVENCOUNT + ",\t" + wasBacktracked + "\n");
 				pw.flush();
 
 			}
@@ -134,7 +134,7 @@ public class Statistics {
 
 	public static void main(String[] args) {
 
-		Statistics.generateStatisticsFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\parsed");
+		Statistics.generateStatisticsFile("genned");
 
 	}
 

@@ -39,7 +39,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 	MultiLayerPerceptron network;
 
 	public void trainNetwork() {
-		trainNetwork("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
+		trainNetwork("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public void trainNetwork(String path) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		network = new MultiLayerPerceptron(22, 50, 7);
+		network = new MultiLayerPerceptron(22, 10, 7);
 		BackPropagation rule = network.getLearningRule();
 		rule.setMaxIterations(500);
 		myNet.fullSet = new DataSet(22, 7);
@@ -62,7 +62,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		Normalizer norm = new MaxNormalizer();
 		norm.normalize(myNet.fullSet);
 		
-		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
+		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCount,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
 		myNet.fullSet.setColumnNames(names);
 
 		int trainingSetPercentage = 70;
@@ -93,13 +93,13 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public static void main(String[] args) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		MultiLayerPerceptron network = new MultiLayerPerceptron(22, 50, 7);
+		MultiLayerPerceptron network = new MultiLayerPerceptron(22, 10, 7);
 		BackPropagation rule = network.getLearningRule();
 		rule.setMaxIterations(2000);
 		rule.addListener(myNet);
 		rule.setLearningRate(0.1);
 		myNet.fullSet = new DataSet(22, 7);
-		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
+		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 
 		Normalizer norm = new MaxNormalizer();
 		norm.normalize(myNet.fullSet);
@@ -140,7 +140,9 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
-	private DataSetRow addBoard(Board b) {
+	private DataSetRow addBoard(Board ori) {
+		Board b = new Board(ori);
+		
 		SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
 				new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2), new BlockLineInteractionMethod(),
 				new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
@@ -169,8 +171,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 			if (solveMethod >= methods.length) {
 				solving = false;
 				solveMethod = 0;
-			}
-			if (methods[solveMethod].solve(b)) {
+			} else if (methods[solveMethod].solve(b)) {
 				solveCounter[solveMethod]++;
 				solveMethod = 0;
 			} else

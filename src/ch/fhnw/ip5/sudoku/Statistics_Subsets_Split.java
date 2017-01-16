@@ -238,7 +238,7 @@ public class Statistics_Subsets_Split {
 	public static void main(String[] args) {
 
 		Statistics_Subsets_Split
-				.generateStatisticsFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\all_parsed");
+				.generateStatisticsFile("C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 
 	}
 

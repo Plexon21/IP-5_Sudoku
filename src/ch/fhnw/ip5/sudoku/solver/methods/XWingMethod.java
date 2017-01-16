@@ -50,7 +50,7 @@ public class XWingMethod implements SolveMethod {
 							
 						}
 						
-						if (count == 2 && count2 == 2) {
+						if (count1 == 2 && count2 == 2) {
 							
 							//XWing found
 							boolean somethingChanged = false;
