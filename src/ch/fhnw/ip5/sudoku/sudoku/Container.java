@@ -1,11 +1,26 @@
 package ch.fhnw.ip5.sudoku.sudoku;
 
+/**
+ * Container class that holds a number of cells
+ * generally represents a row, column or a box of the sudoku
+ * 
+ * @author Simon
+ *
+ */
 public class Container {
 	
+	/**
+	 * cells contained in this container
+	 */
 	private Cell[] cells;
 	
-	public Container(byte height) {
-		cells = new Cell[height];
+	/**
+	 * constructor
+	 * 
+	 * @param size the size of the container
+	 */
+	public Container(byte size) {
+		cells = new Cell[size];
 	}
 	
 	public void setCell(Cell cell, byte pos) {
