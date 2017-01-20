@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import ch.fhnw.ip5.sudoku.reader.SudokuCSVParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
+//TODO JAVADOC
 public class ParseCSVFolder {
 	public static String sourceFolder = "C://Users//Matth//Downloads//Sudoku//KTI";
 	public static String targetFolder = "C://Users//Matth//Downloads//Sudoku//KTI_parsed";

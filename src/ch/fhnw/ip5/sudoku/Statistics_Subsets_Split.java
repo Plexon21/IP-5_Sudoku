@@ -10,12 +10,12 @@ import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.Counter;
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
-import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
@@ -133,7 +133,7 @@ public class Statistics_Subsets_Split {
 						solving = false;
 						solveMethod = 0;
 					}
-					if (methods[solveMethod].solve(b)) {
+					if (methods[solveMethod].apply(b)) {
 						solveCounter[solveMethod]++;
 						solveMethod = 0;
 					} else

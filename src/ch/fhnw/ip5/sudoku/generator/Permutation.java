@@ -5,19 +5,45 @@ import java.util.Random;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 
+/**
+ * class to permutate a board<br>
+ * permutations include:<br>
+ * - transpose the board<br>
+ * - rearrange the numbers (set all ones to threes and vice versa)<br>
+ * - swap rows in a block<br>
+ * - swap columns in a block<br>
+ * - swap horizontal blocks on the board<br>
+ * - swap vertical blocks on the board
+ */
 public class Permutation {
 	
-	private static Random rng = new Random();
+	/**
+	 * Random used to generate random decisions
+	 */
+	private static Random rng = new Random(System.nanoTime());
 
+	/**
+	 * permutate a given board 
+	 * @param b the given board
+	 */
 	public static void permutateBoard(Board b) {
 		
-		if (rng.nextDouble() < 0.5) transponse(b);
+		//1. transpose
+		if (rng.nextBoolean()) transponse(b);
 		
+		//2. rearrange numbers
 		rearrangeNumbers(b);
 		
+		//3. swap
 		swapRowsColumnsAndBlocks(b);
 	}
 	
+	/**
+	 * transpose the board<br>
+	 * this is equivalent to flip the whole board on the diagonal axis that starts in the top left corner
+	 * 
+	 * @param b the board to transpose
+	 */
 	private static void transponse(Board b) {
 		
 		for (byte i = 1; i < b.SIZE; i++) {
@@ -43,6 +69,12 @@ public class Permutation {
 		}
 	}
 	
+	/**
+	 * rearrange all Numbers randomly<br>
+	 * set for example all ones to threes and vice versa
+	 * 
+	 * @param b the board to change
+	 */
 	private static void rearrangeNumbers(Board b) {
 		
 		byte[] newPos = new byte[b.SIZE];
@@ -67,6 +99,11 @@ public class Permutation {
 		}
 	}
 	
+	/**
+	 * apply all swaps on a board randomly
+	 * 
+	 * @param b the board to change
+	 */
 	private static void swapRowsColumnsAndBlocks(Board b) {
 		
 		byte[] pos = new byte[] {0,1,2};
@@ -81,6 +118,12 @@ public class Permutation {
 		swapRowsInBlock(b, pos, 2);
 	}
 	
+	/**
+	 * swap the horizontal blocks of a given board
+	 * 
+	 * @param b the board to change
+	 * @param pos array to determine the new positions
+	 */
 	private static void swapBlocksHorizontally(Board b, byte[] pos) {
 		
 		shuffleArray(pos);
@@ -109,6 +152,13 @@ public class Permutation {
 		}
 	}
 	
+	
+	/**
+	 * swap the vertical blocks of a given board
+	 * 
+	 * @param b the board to change
+	 * @param pos array to determine the new positions
+	 */
 	private static void swapBlocksVertically(Board b, byte[] pos) {
 		
 		shuffleArray(pos);
@@ -137,6 +187,13 @@ public class Permutation {
 		}
 	}
 	
+	/**
+	 * swaps the rows in a block
+	 * 
+	 * @param b the board to change
+	 * @param pos array to determine the new positions
+	 * @param block the horizontal block to change 
+	 */
 	private static void swapRowsInBlock(Board b, byte[] pos, int block) {
 		
 		shuffleArray(pos);
@@ -162,6 +219,13 @@ public class Permutation {
 		}
 	}
 	
+	/**
+	 * swaps the columns in a block
+	 * 
+	 * @param b the board to change
+	 * @param pos array to determine the new positions
+	 * @param block the vertical block to change 
+	 */
 	private static void swapColumnsInBlock(Board b, byte[] pos, int block) {
 		
 		shuffleArray(pos);
@@ -187,6 +251,11 @@ public class Permutation {
 		}
 	}
 	
+	/**
+	 * shuffle an array
+	 * 
+	 * @param array the array to shuffle
+	 */
 	private static void shuffleArray(byte[] array) {
 		
 		for (int i = array.length - 1; i > 0; i--) {

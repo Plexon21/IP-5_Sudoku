@@ -2,14 +2,16 @@ package ch.fhnw.ip5.sudoku.solver.methods;
 
 import java.util.ArrayList;
 
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
+//TODO JAVADOC
 public class BlockLineInteractionMethod implements SolveMethod{
 
 	@Override
-	public boolean solve(Board b) {
+	public boolean apply(Board b) {
 		
 		for (Container c : b.getBoxes()) {
 			
@@ -85,10 +87,4 @@ public class BlockLineInteractionMethod implements SolveMethod{
 		
 		return false;
 	}
-
-	@Override
-	public int getDifficultyValue() {
-		return 300;
-	}
-
 }

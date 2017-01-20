@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
+//TODO JAVADOC
 public class HiddenSubSetMethod implements SolveMethod {
 
 	private byte size;
@@ -19,7 +21,7 @@ public class HiddenSubSetMethod implements SolveMethod {
 	}
 
 	@Override
-	public boolean solve(Board b) {
+	public boolean apply(Board b) {
 
 		// b.cluesPrint();
 
@@ -130,10 +132,4 @@ public class HiddenSubSetMethod implements SolveMethod {
 
 		return false;
 	}
-
-	@Override
-	public int getDifficultyValue() {
-		return 200;
-	}
-
 }

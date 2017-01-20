@@ -18,15 +18,16 @@ import org.neuroph.util.data.norm.Normalizer;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.Counter;
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
-import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO JAVADOC
 public class NeuralNetworkHandler implements LearningEventListener {
 
 	public DataSet fullSet;
@@ -177,7 +178,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 			if (solveMethod >= methods.length) {
 				solving = false;
 				solveMethod = 0;
-			} else if (methods[solveMethod].solve(b)) {
+			} else if (methods[solveMethod].apply(b)) {
 				solveCounter[solveMethod]++;
 				solveMethod = 0;
 			} else
@@ -234,7 +235,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 						solving = false;
 						solveMethod = 0;
 					}
-					if (methods[solveMethod].solve(b)) {
+					if (methods[solveMethod].apply(b)) {
 						solveCounter[solveMethod]++;
 						solveMethod = 0;
 					} else

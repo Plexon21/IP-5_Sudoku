@@ -2,9 +2,9 @@ package ch.fhnw.ip5.sudoku;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
-import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
@@ -36,7 +36,7 @@ public class CheckSudoku {
 		b.simplePrint();
 		b.cluesPrint();
 		
-		if (m.solve(b)) {
+		if (m.apply(b)) {
 			System.out.println("Worked");
 		}
 		

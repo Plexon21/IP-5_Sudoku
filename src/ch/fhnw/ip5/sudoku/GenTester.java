@@ -52,7 +52,7 @@ public class GenTester {
 			
 			Board ori = seventeens.get(ran);
 			
-			Board gen = Generator.generateBoard(ori);
+			Board gen = Generator.generateBoardWithRandomCells(ori);
 			
 			if (gen != null) {
 				

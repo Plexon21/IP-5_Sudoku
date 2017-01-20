@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
+//TODO JAVADOC
 public class ParseFolder {
 	public static String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy";
 	public static String targetFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed";

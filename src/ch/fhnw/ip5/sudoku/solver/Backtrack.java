@@ -4,6 +4,7 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
+//TODO JAVADOC
 public class Backtrack{
 	
 	private static byte size;

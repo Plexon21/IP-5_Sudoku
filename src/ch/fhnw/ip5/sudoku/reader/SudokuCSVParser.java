@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO JAVADOC
 public class SudokuCSVParser {
 
 	public static char[] values;

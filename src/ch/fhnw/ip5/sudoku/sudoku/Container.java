@@ -3,9 +3,6 @@ package ch.fhnw.ip5.sudoku.sudoku;
 /**
  * Container class that holds a number of cells
  * generally represents a row, column or a box of the sudoku
- * 
- * @author Simon
- *
  */
 public class Container {
 	

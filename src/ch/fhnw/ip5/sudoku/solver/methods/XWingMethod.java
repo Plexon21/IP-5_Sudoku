@@ -1,12 +1,14 @@
 package ch.fhnw.ip5.sudoku.solver.methods;
 
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 
+//TODO JAVADOC
 public class XWingMethod implements SolveMethod {
 
 	@Override
-	public boolean solve(Board b) {
+	public boolean apply(Board b) {
 		
 		for (byte i = 0; i < b.SIZE-1; i++) {
 			
@@ -87,11 +89,4 @@ public class XWingMethod implements SolveMethod {
 		
 		return false;
 	}
-
-	@Override
-	public int getDifficultyValue() {
-		//TODO
-		return 10000;
-	}
-
 }

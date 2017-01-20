@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 /**
  * Cell class that represents one little square in a sudoku
- * 
- * @author Simon
- *
  */
 public class Cell {
 
@@ -148,6 +145,20 @@ public class Cell {
 		values[value - 1] = CellState.CERTAIN;
 		possibleValuesCount = 0;
 		this.finalValue = value;
+	}
+	
+	/**
+	 * setup possibilies for the cell
+	 */
+	public void setup() {
+		if (finalValue == 0) {
+			Arrays.fill(values, CellState.POSSIBLE);
+			possibleValuesCount = (byte) values.length;
+		} else {
+			Arrays.fill(values, CellState.IMPOSSIBLE);
+			values[finalValue - 1] = CellState.CERTAIN;
+			possibleValuesCount = 0;
+		}
 	}
 	
 	/**

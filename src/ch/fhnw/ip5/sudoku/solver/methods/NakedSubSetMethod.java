@@ -3,10 +3,12 @@ package ch.fhnw.ip5.sudoku.solver.methods;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
+//TODO JAVADOC
 public class NakedSubSetMethod implements SolveMethod{
 	private byte subsetSize = 2;
 
@@ -17,7 +19,7 @@ public class NakedSubSetMethod implements SolveMethod{
 	}
 	
 	@Override
-	public boolean solve(Board b) {
+	public boolean apply(Board b) {
 		if (solveForSubsetsize(b, subsetSize))
 		{
 			return true;
@@ -130,10 +132,4 @@ public class NakedSubSetMethod implements SolveMethod{
 			
 		return true;
 	}
-
-	@Override
-	public int getDifficultyValue() {
-		return 100;
-	}
-
 }
