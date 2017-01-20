@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
-import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
 public class Statistics {
@@ -82,15 +82,15 @@ public class Statistics {
 				int wasBacktracked = 0;
 
 				while (solving) {
-					if (m1.solve(b)) {
+					if (m1.apply(b)) {
 						m1counter++;
-					} else if (m2.solve(b)) {
+					} else if (m2.apply(b)) {
 						m2counter++;
-					} else if (m3.solve(b)) {
+					} else if (m3.apply(b)) {
 						m3counter++;
-					} else if (m4.solve(b)) {
+					} else if (m4.apply(b)) {
 						m4counter++;
-					} else if (m5.solve(b)) {
+					} else if (m5.apply(b)) {
 						m5counter++;
 					} else {
 						solving = false;

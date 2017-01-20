@@ -7,12 +7,12 @@ import java.util.List;
 import ch.fhnw.ip5.sudoku.gui.SudokuGUI;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
-import ch.fhnw.ip5.sudoku.solver.methods.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
@@ -105,47 +105,47 @@ public class Application {
 				steps.add(new Board(b));
 
 				while (solving) {
-					if (m1.solve(b)) {
+					if (m1.apply(b)) {
 						m1counter++;
 						steps.add(new Board(b));
-					} else if (m2.solve(b)) {
+					} else if (m2.apply(b)) {
 						m2counter++;
 						steps.add(new Board(b));
-					} else if (m3_Size2.solve(b)) {
+					} else if (m3_Size2.apply(b)) {
 						m3_Size2counter++;
-					} else if (m4_Size2.solve(b)) {
+					} else if (m4_Size2.apply(b)) {
 						m4_Size2counter++;
-					} else if (m5.solve(b)) {
+					} else if (m5.apply(b)) {
 						m5counter++;
-					} else if (m3_Size3.solve(b)) {
+					} else if (m3_Size3.apply(b)) {
 						m3_Size3counter++;
-					} else if (m4_Size3.solve(b)) {
+					} else if (m4_Size3.apply(b)) {
 						m4_Size3counter++;
-					} else if (m3_Size4.solve(b)) {
+					} else if (m3_Size4.apply(b)) {
 						m3_Size4counter++;
-					} else if (m4_Size4.solve(b)) {
+					} else if (m4_Size4.apply(b)) {
 						m4_Size4counter++;
-					} else if (m3_Size5.solve(b)) {
+					} else if (m3_Size5.apply(b)) {
 						m3_Size5counter++;
-					} else if (m4_Size5.solve(b)) {
+					} else if (m4_Size5.apply(b)) {
 						m4_Size5counter++;
-					} else if (m3_Size6.solve(b)) {
+					} else if (m3_Size6.apply(b)) {
 						m3_Size6counter++;
-					} else if (m4_Size6.solve(b)) {
+					} else if (m4_Size6.apply(b)) {
 						m4_Size6counter++;
-					} else if (m3_Size7.solve(b)) {
+					} else if (m3_Size7.apply(b)) {
 						m3_Size7counter++;
-					} else if (m4_Size7.solve(b)) {
+					} else if (m4_Size7.apply(b)) {
 						m4_Size7counter++;
-					} else if (m3_Size8.solve(b)) {
+					} else if (m3_Size8.apply(b)) {
 						m3_Size8counter++;
-					} else if (m4_Size8.solve(b)) {
+					} else if (m4_Size8.apply(b)) {
 						m4_Size8counter++;
-					} else if (m3_Size9.solve(b)) {
+					} else if (m3_Size9.apply(b)) {
 						m3_Size9counter++;
-					} else if (m4_Size9.solve(b)) {
+					} else if (m4_Size9.apply(b)) {
 						m4_Size9counter++;
-					} else if (m6.solve(b)) {
+					} else if (m6.apply(b)) {
 						m6counter++;
 					} else {
 						solving = false;

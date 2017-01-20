@@ -1,12 +1,16 @@
 package ch.fhnw.ip5.sudoku.solver.methods;
 
+import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.solver.Updater;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
+/**
+ * implemtation of the Hidden Singles solving method
+ */
 public class HiddenSingleMethod implements SolveMethod {
 
-	public boolean solve(Board b) {
+	public boolean apply(Board b) {
 		
 		for (byte i = 0; i < b.SIZE; i++) {
 			
@@ -82,10 +86,4 @@ public int check(Board b) {
 		}		
 		return 0;		
 	}
-	
-
-	public int getDifficultyValue() {
-		return 10;
-	}
-
 }

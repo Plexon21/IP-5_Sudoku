@@ -5,13 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang3.builder.Diff;
-
-import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.Solver;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
-import ch.fhnw.ip5.sudoku.sudoku.Difficulty;
 
 /**
  * class to Generate new board on a given base board
@@ -72,7 +68,7 @@ public class Generator {
 		
 		//solve the copied board
 		//if not solvable return null
-		if (!Solver.solve(sol, false)) return null;
+		if (Solver.solve(sol, false) == null) return null;
 		
 		//set cells according to the solution
 		for (int i = 0; i < amount; i++) {
@@ -136,7 +132,7 @@ public class Generator {
 		
 		//solve the copied board
 		//if not solvable return null
-		if (!Solver.solve(sol, false)) return null;
+		if (Solver.solve(sol, false) == null) return null;
 		
 		//set cells according to the solution
 		for (int i = 0; i < amount; i++) {
@@ -166,7 +162,7 @@ public class Generator {
 		//permutate the board
 		Permutation.permutateBoard(b);
 		
-		if (!Solver.solve(b, true)) throw new IllegalStateException("Board was not solvable with backtrack");
+		if (Solver.solve(b, true) == null) throw new IllegalStateException("Board was not solvable with backtrack");
 		
 		//list of set cells on the board
 		List<Cell> cells = new ArrayList<>();
@@ -224,7 +220,7 @@ public class Generator {
 		}
 		
 		//if not solvable without backtracking return null
-		if (!Solver.solve(new Board(b), false)) return null;
+		if (Solver.solve(new Board(b), false) == null) return null;
 		
 		b.setupBoard();		
 		
