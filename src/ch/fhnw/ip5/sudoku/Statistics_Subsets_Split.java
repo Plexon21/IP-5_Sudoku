@@ -31,7 +31,7 @@ public class Statistics_Subsets_Split {
 					"Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,NakedSubsets_Size5,HiddenSubsets_Size5,NakedSubsets_Size6,HiddenSubsets_Size6,NakedSubsets_Size7,HiddenSubsets_Size7,NakedSubsets_Size8,HiddenSubsets_Size8,NakedSubsets_Size9,HiddenSubsets_Size9,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,wasBacktracked\n");
 			*/
 			pw.write(
-					"wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWing,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked,Difficulty\n");
+					"Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWing,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked\n");
 			
 			pw.flush();
 		} catch (IOException e) {
@@ -215,7 +215,7 @@ public class Statistics_Subsets_Split {
 						+ startPos[5] + "," + startPos[6] + "," + startPos[7] + "," + startPos[8] + ","
 						+ totalPossibilities + ","
 						+ wasBacktracked + "\n");*/
-				pw.write((b.isFilled() ? "1," : "0,") 
+				pw.write(difficulty+ "," +(b.isFilled() ? "1," : "0,") 
 						+ solveCounter[0] + ","	+ solveCounter[1] + "," 
 						+ solveCounter[2] + "," + solveCounter[3] + "," 
 						+ solveCounter[4] + ","
@@ -226,7 +226,7 @@ public class Statistics_Subsets_Split {
 						+ startPos[0] + "," + startPos[1] + "," + startPos[2] + "," + startPos[3] + "," + startPos[4]+ ","
 						+ startPos[5] + "," + startPos[6] + "," + startPos[7] + "," + startPos[8] + ","
 						+ totalPossibilities + ","
-						+ wasBacktracked +","+ difficulty+ "\n");
+						+ wasBacktracked +"\n");
 				pw.flush();
 
 			}
@@ -238,7 +238,7 @@ public class Statistics_Subsets_Split {
 	public static void main(String[] args) {
 
 		Statistics_Subsets_Split
-				.generateStatisticsFile("C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
+				.generateStatisticsFile("C:\\Programming\\IP-5_sudoku\\genned\\removing");
 
 	}
 

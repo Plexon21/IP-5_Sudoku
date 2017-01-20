@@ -24,7 +24,7 @@ public class GenTester {
 		System.out.println("Reading from File");
 		
 		try {
-			seventeens = SudokuReader.readFromFilename("C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\17-sudokus_Nullen_with_prefix.txt");
+			seventeens = SudokuReader.readFromFilename("C:\\Programming\\IP-5_sudoku\\res\\17er_Korpus\\17er_sudokus.sudoku");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,7 +36,7 @@ public class GenTester {
 		System.out.println();
 		System.out.println("Solver trained");
 		
-		int numberOfSudoku = 100000;
+		int numberOfSudoku = 10000;
 		
 		int[][] testarray = new int[9][9];
 		
@@ -52,7 +52,7 @@ public class GenTester {
 			
 			Board ori = seventeens.get(ran);
 			
-			Board gen = Generator.generateBoardWithRandomCells(ori);
+			Board gen = Generator.generateBoardRemoving(ori);
 			
 			if (gen != null) {
 				
@@ -94,7 +94,7 @@ public class GenTester {
 
 		BufferedWriter bw;
 		try {
-			bw = new BufferedWriter(new FileWriter("genned/genned.sudoku"));
+			bw = new BufferedWriter(new FileWriter("genned/gennedremoving.sudoku"));
 			
 			for (int i = 0; i < generatedSudoku.size(); i++) {
 //				generatedSudoku.get(i).simplePrint();

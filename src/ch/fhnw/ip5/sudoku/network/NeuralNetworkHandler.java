@@ -53,7 +53,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 	}
 
 	public void trainNetwork(String path) {
-		network = new MultiLayerPerceptron(22, 10, 7);
+		network = new MultiLayerPerceptron(22, 50, 7);
 		network.setLearningRule(new MomentumBackpropagation());;
 		MomentumBackpropagation rule = (MomentumBackpropagation)network.getLearningRule();
 		rule.setMaxIterations(2000);
@@ -62,8 +62,8 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		fullSet = new DataSet(22, 7);
 		sudokusToFile(path);
 
-		//Normalizer norm = new MaxNormalizer();
-		//norm.normalize(myNet.fullSet);
+//		Normalizer norm = new MaxNormalizer();
+//		norm.normalize(fullSet);
 		
 		//String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCount,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
 		//myNet.fullSet.setColumnNames(names);
