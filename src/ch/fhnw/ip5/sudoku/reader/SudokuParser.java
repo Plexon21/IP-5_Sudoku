@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO JAVADOC
 public class SudokuParser {
 
 	public static char[] values;

@@ -5,9 +5,6 @@ import ch.fhnw.ip5.sudoku.solver.Updater;
 
 /**
  * Board class that represents the whole Sudoku
- * 
- * @author Simon
- *
  */
 public class Board {
 	
@@ -203,6 +200,15 @@ public class Board {
 	 * updates the pencilmarks of all cells according to the given cells
 	 */
 	public void setupBoard() {
+		
+		//remove all changes to the pencilmarks
+		for (byte i = 0; i < SIZE; i++) {
+			for (byte j = 0; j < SIZE; j++) {
+				cells[i][j].setup();
+			}
+		}
+		
+		//reassign the pencilmarks according to the given cells on the board
 		for (byte i = 0; i < SIZE; i++) {
 			for (byte j = 0; j < SIZE; j++) {
 				if (cells[i][j].getValue() != 0) {

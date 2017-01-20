@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+//TODO JAVADOC
 public class AddStringAtStart {
 
 	private static BufferedReader br;

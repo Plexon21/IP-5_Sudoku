@@ -13,6 +13,7 @@ import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Difficulty;
 
+//TODO JAVADOC
 public class Solver {
 	
 	private NeuralNetworkHandler nnh;

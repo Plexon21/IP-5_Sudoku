@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO JAVADOC
 public class SudokuReader {
 
 	private static BufferedReader br;
