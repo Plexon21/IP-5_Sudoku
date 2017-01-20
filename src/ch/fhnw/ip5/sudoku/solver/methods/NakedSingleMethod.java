@@ -16,9 +16,9 @@ public class NakedSingleMethod implements SolveMethod {
 			for (byte j = 0; j < b.SIZE; j++) {
 				Cell tempCell = b.getCellAt(i, j);
 				if (tempCell.getPossibleValuesCount() == 1) {
-					for (byte x = 1; x <= b.SIZE; x++) {
-						if (tempCell.isPossible(x)) {
-							Updater.updateBoard(b, i, j, x, UsedMethod.NAKEDSINGLE);
+					for (byte value = 1; value <= b.SIZE; value++) {
+						if (tempCell.isPossible(value)) {
+							Updater.updateBoard(b, i, j, value, UsedMethod.NAKEDSINGLE);
 							return true;
 						}
 					}
@@ -32,8 +32,8 @@ public class NakedSingleMethod implements SolveMethod {
 	 * check if a cell can be set with the Naked Single method<br>
 	 * if yes the cell will be set but the pencilmarks will not be updated
 	 * 
-	 * @param b
-	 * @return
+	 * @param b the board
+	 * @return the value of the cell that was set 
 	 */
 	public int check(Board b) {
 		for (byte i = 0; i < b.SIZE; i++) {
