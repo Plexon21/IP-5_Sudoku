@@ -8,6 +8,7 @@ import ch.fhnw.ip5.sudoku.network.SudokuNetwork;
 import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO remove or refactor
 public class NN_Trying {
 	public static void main(String[] args) {
 		

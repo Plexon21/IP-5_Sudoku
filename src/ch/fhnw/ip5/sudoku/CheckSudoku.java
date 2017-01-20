@@ -8,6 +8,7 @@ import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO remove or refactor
 public class CheckSudoku {
 	
 
