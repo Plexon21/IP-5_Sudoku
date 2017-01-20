@@ -53,37 +53,41 @@ public class NeuralNetworkHandler implements LearningEventListener {
 	}
 
 	public void trainNetwork(String path) {
-		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
 		network = new MultiLayerPerceptron(22, 10, 7);
-		BackPropagation rule = network.getLearningRule();
-		rule.setMaxIterations(500);
-		myNet.fullSet = new DataSet(22, 7);
-		myNet.sudokusToFile(path);
+		network.setLearningRule(new MomentumBackpropagation());;
+		MomentumBackpropagation rule = (MomentumBackpropagation)network.getLearningRule();
+		rule.setMaxIterations(2000);
+		rule.setMomentum(0.7);
+		rule.setLearningRate(0.1);
+		fullSet = new DataSet(22, 7);
+		sudokusToFile(path);
 
-		Normalizer norm = new MaxNormalizer();
-		norm.normalize(myNet.fullSet);
+		//Normalizer norm = new MaxNormalizer();
+		//norm.normalize(myNet.fullSet);
 		
-		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCount,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
-		myNet.fullSet.setColumnNames(names);
+		//String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCount,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
+		//myNet.fullSet.setColumnNames(names);
 
 		int trainingSetPercentage = 70;
 
-		DataSet[] sets = myNet.fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
+		DataSet[] sets = fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
 		DataSet training = sets[0];
 		DataSet test = sets[1];
 		network.learn(training);
 
 		trained = true;
 
-		myNet.testNeuralNetwork(network, test);
+		testNeuralNetwork(network, test);
 	}
 
 	public int predictBoard(Board b) {
 		if (!trained) {
 			trainNetwork();
 		}
+		
 		DataSetRow row = addBoard(b);
-		network.setInput(row.getInput());
+		double[] input = row.getInput();
+		network.setInput(input);
 		network.calculate();
 
 		double[] output = network.getOutput();
@@ -94,11 +98,13 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public static void main(String[] args) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		MultiLayerPerceptron network = new MultiLayerPerceptron(22, 10, 7);
-		BackPropagation rule = network.getLearningRule();
-		rule.setMaxIterations(2000);
+		myNet.network = new MultiLayerPerceptron(22, 100, 7);
+		myNet.network.setLearningRule(new MomentumBackpropagation());
+		MomentumBackpropagation rule =(MomentumBackpropagation) myNet.network.getLearningRule();
+		rule.setMaxIterations(5000);
 		rule.addListener(myNet);
-		rule.setLearningRate(0.1);
+		rule.setLearningRate(0.05);
+		rule.setMomentum(0.7);
 		myNet.fullSet = new DataSet(22, 7);
 		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 
@@ -106,15 +112,15 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		norm.normalize(myNet.fullSet);
 
 		int trainingSetPercentage = 70;
-		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
-		myNet.fullSet.setColumnNames(names);
+//		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
+//		myNet.fullSet.setColumnNames(names);
 
 		DataSet[] sets = myNet.fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
 		DataSet training = sets[0];
 		DataSet test = sets[1];
-		network.learn(training);
+		myNet.network.learn(training);
 
-		myNet.testNeuralNetwork(network, test);
+		myNet.testNeuralNetwork(myNet.network, test);
 
 	}
 
@@ -310,13 +316,11 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	private static int maxOutput(double[] array) {
 		double max = array[0];
-		double second = Double.NEGATIVE_INFINITY;
 		int index = 0;
 
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] > max) {
 				index = i;
-				second = max;
 				max = array[i];
 			}
 		}
