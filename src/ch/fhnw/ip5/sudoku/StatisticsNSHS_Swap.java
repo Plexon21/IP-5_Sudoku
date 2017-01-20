@@ -15,6 +15,7 @@ import ch.fhnw.ip5.sudoku.solver.methods.NakedSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
+//TODO remove or refactor
 public class StatisticsNSHS_Swap {
 
 	public static void generateStatisticsFile(String sourceFolder) {

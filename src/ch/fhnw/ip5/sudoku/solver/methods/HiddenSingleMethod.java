@@ -5,9 +5,7 @@ import ch.fhnw.ip5.sudoku.solver.Updater;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
-/**
- * implemtation of the Hidden Singles solving method
- */
+//TODO javadoc
 public class HiddenSingleMethod implements SolveMethod {
 
 	public boolean apply(Board b) {
