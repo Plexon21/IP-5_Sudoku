@@ -55,8 +55,9 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public void trainNetwork(String path) {
 		network = new MultiLayerPerceptron(22, 50, 7);
-		network.setLearningRule(new MomentumBackpropagation());;
-		MomentumBackpropagation rule = (MomentumBackpropagation)network.getLearningRule();
+		network.setLearningRule(new MomentumBackpropagation());
+		;
+		MomentumBackpropagation rule = (MomentumBackpropagation) network.getLearningRule();
 		rule.setMaxIterations(2000);
 		rule.setMomentum(0.7);
 		rule.setLearningRate(0.1);
@@ -79,7 +80,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		if (!trained) {
 			trainNetwork();
 		}
-		
+
 		DataSetRow row = getFeaturesAsRow(b);
 		double[] input = row.getInput();
 		network.setInput(input);
@@ -95,7 +96,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
 		myNet.network = new MultiLayerPerceptron(22, 50, 7);
 		myNet.network.setLearningRule(new MomentumBackpropagation());
-		MomentumBackpropagation rule =(MomentumBackpropagation) myNet.network.getLearningRule();
+		MomentumBackpropagation rule = (MomentumBackpropagation) myNet.network.getLearningRule();
 		rule.setMaxIterations(5000);
 		rule.addListener(myNet);
 		rule.setLearningRate(0.05);
@@ -139,25 +140,25 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	private DataSetRow getFeaturesAsRow(Board ori) {
 		Board b = new Board(ori);
-		
+
 		int[] features = Solver.solve(b, true);
 		double[] inputValues = normalizeFeaturesLog(features);
 		return new DataSetRow(inputValues);
 	}
-	
-	public double[] normalizeFeaturesLog(int[] features){
-				
-		double[] results = new double[features.length-2];
-		for(int i=2;i<features.length-2;i++){
-			results[i] = Math.log(features[i+2]+1);
+
+	public double[] normalizeFeaturesLog(int[] features) {
+
+		double[] results = new double[features.length - 2];
+		for (int i = 2; i < features.length - 2; i++) {
+			results[i] = Math.log(features[i + 2] + 1);
 		}
-		
-		double percentageNaked = (double)features[2]/(double)features[12];
-		double percentageHidden = (double)features[2]/(double)features[12];
+
+		double percentageNaked = (double) features[2] / (double) features[12];
+		double percentageHidden = (double) features[2] / (double) features[12];
 		results[0] = percentageNaked;
 		results[1] = percentageHidden;
-		
-		return results;		
+
+		return results;
 	}
 
 	private void solve(File source) {
@@ -165,10 +166,10 @@ public class NeuralNetworkHandler implements LearningEventListener {
 			ArrayList<Board> list = new ArrayList<>();
 
 			list.addAll(SudokuReader.readFromFile(source));
-		
+
 			for (Board b : list) {
 				int[] features = Solver.solve(b, true);
-				
+
 				int[] difficulty = new int[7];
 				if (source.toString().contains("veryeasy") || source.toString().contains("S1"))
 					difficulty[0] = 1;
@@ -188,9 +189,9 @@ public class NeuralNetworkHandler implements LearningEventListener {
 				double[] inputValues = normalizeFeaturesLog(features);
 				double[] outputValues = new double[] { difficulty[0], difficulty[1], difficulty[2], difficulty[3],
 						difficulty[4], difficulty[5], difficulty[6], };
-				fullSet.addRow(inputValues, outputValues);		
+				fullSet.addRow(inputValues, outputValues);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -198,7 +199,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public void testNeuralNetwork(MultiLayerPerceptron neuralNet, DataSet testSet) {
 
-		System.out.println("RESULT:");
+		System.out.println("Result:");
 		for (DataSetRow testSetRow : testSet.getRows()) {
 			neuralNet.setInput(testSetRow.getInput());
 			neuralNet.calculate();
@@ -245,7 +246,6 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		return index;
 	}
 
-	// Colecting data to evaluate network.
 	private void keepScore(int prediction, int ideal) {
 		addToConfMat(prediction, ideal);
 		countAll[ideal]++;
