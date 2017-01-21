@@ -30,7 +30,7 @@ public class Board {
 	/**
 	 * number of values set at the creation of the sudoku
 	 */
-	public final byte GIVENCOUNT;
+	public byte GIVENCOUNT;
 	
 	/**
 	 * 2D array of the cells in the sudoku
@@ -198,6 +198,7 @@ public class Board {
 	
 	/**
 	 * updates the pencilmarks of all cells according to the given cells
+	 * also updates the givencount
 	 */
 	public void setupBoard() {
 		
@@ -208,14 +209,20 @@ public class Board {
 			}
 		}
 		
+		byte newGivenCount = 0;
+		
 		//reassign the pencilmarks according to the given cells on the board
 		for (byte i = 0; i < SIZE; i++) {
 			for (byte j = 0; j < SIZE; j++) {
 				if (cells[i][j].getValue() != 0) {
 					Updater.updateBoard(this, i, j, cells[i][j].getValue(), UsedMethod.GIVEN);
+					newGivenCount++;
 				}
 			}
 		}
+		
+		this.GIVENCOUNT = newGivenCount;
+		
 	}
 	
 	/**

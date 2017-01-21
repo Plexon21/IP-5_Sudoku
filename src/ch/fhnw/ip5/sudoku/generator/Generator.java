@@ -15,19 +15,33 @@ import ch.fhnw.ip5.sudoku.sudoku.Cell;
 public class Generator {
 	
 	/**
-	 * minimum number of given start cells
+	 * minimum number of given start numbers
 	 */
-	public static int minValue = 20;
+	public int minClues = 20;
 	
 	/**
-	 * maximum number of given start cells
+	 * maximum number of given start numbers
 	 */
-	public static int maxValue = 36;
+	public int maxClues = 36;
 	
 	/**
 	 * Random used to generate random decisions
 	 */
-	private static Random rng = new Random(System.nanoTime());
+	private Random rng = new Random(System.nanoTime());
+	
+	/**
+	 * constructor
+	 * 
+	 * @param minClues the minimum amount of given start numbers
+	 * @param maxClues the maximum amount of given start numbers
+	 */
+	public Generator(int minClues, int maxClues) {
+		
+		this.minClues = minClues;
+		this.maxClues = maxClues;
+		
+		this.rng = new Random(System.nanoTime());	
+	}
 	
 	/**
 	 * generates a new board on a given base board<br>
@@ -36,7 +50,7 @@ public class Generator {
 	 * @param ori the base board
 	 * @return the newly generated board
 	 */
-	public static Board generateBoardWithRandomCells(Board ori) {
+	public Board generateBoardWithRandomCells(Board ori) {
 		
 		//copy the given board
 		Board b = new Board(ori);
@@ -61,7 +75,7 @@ public class Generator {
 		Collections.shuffle(possibleAddings, rng);
 		
 		//number of cells that will be added
-		int amount = rng.nextInt(maxValue + 1 - minValue) + minValue - b.GIVENCOUNT;
+		int amount = rng.nextInt(maxClues + 1 - minClues) + minClues - b.GIVENCOUNT;
 		
 		//copy the permutated board
 		Board sol = new Board(b);
@@ -89,7 +103,7 @@ public class Generator {
 	 * @param ori the base board
 	 * @return the newly generated board
 	 */
-	public static Board generateBoardWithRandomFlippedCells(Board ori) {
+	public Board generateBoardWithRandomFlippedCells(Board ori) {
 		
 		//copy the given board
 		Board b = new Board(ori);
@@ -125,7 +139,7 @@ public class Generator {
 		Collections.shuffle(possibleAddings, rng);
 		
 		//number of cells that will be added
-		int amount = rng.nextInt(maxValue + 1 - minValue) + minValue - b.GIVENCOUNT;
+		int amount = rng.nextInt(maxClues + 1 - minClues) + minClues - b.GIVENCOUNT;
 		
 		//copy the permutated board
 		Board sol = new Board(b);
@@ -154,7 +168,7 @@ public class Generator {
 	 * @param ori the base board
 	 * @return the newly generated board
 	 */
-	public static Board generateBoardRemoving(Board ori) {
+	public Board generateBoardRemoving(Board ori) {
 		
 		//copy the given board
 		Board b = new Board(ori);
@@ -174,9 +188,11 @@ public class Generator {
 		}
 		
 		//amount of cells to have at the end
-		int toRemove = (b.SIZE*b.SIZE) - (rng.nextInt(maxValue+1 - minValue) + minValue);
+		int toRemove = (b.SIZE*b.SIZE) - (rng.nextInt(maxClues+1 - minClues) + minClues);
 		
 		while(toRemove > 0) {
+			
+			if (cells.size() <= 0) return null; 
 			
 			Cell cellToRemove = cells.get(rng.nextInt(cells.size()));
 			
