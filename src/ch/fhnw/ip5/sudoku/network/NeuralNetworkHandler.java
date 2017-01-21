@@ -19,6 +19,7 @@ import ch.fhnw.ip5.sudoku.reader.SudokuReader;
 import ch.fhnw.ip5.sudoku.solver.Backtrack;
 import ch.fhnw.ip5.sudoku.solver.Counter;
 import ch.fhnw.ip5.sudoku.solver.SolveMethod;
+import ch.fhnw.ip5.sudoku.solver.Solver;
 import ch.fhnw.ip5.sudoku.solver.methods.BlockLineInteractionMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSingleMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.HiddenSubSetMethod;
@@ -62,12 +63,6 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		fullSet = new DataSet(22, 7);
 		sudokusToFile(path);
 
-//		Normalizer norm = new MaxNormalizer();
-//		norm.normalize(fullSet);
-		
-		//String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCount,GivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
-		//myNet.fullSet.setColumnNames(names);
-
 		int trainingSetPercentage = 70;
 
 		DataSet[] sets = fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
@@ -85,7 +80,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 			trainNetwork();
 		}
 		
-		DataSetRow row = addBoard(b);
+		DataSetRow row = getFeaturesAsRow(b);
 		double[] input = row.getInput();
 		network.setInput(input);
 		network.calculate();
@@ -98,7 +93,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	public static void main(String[] args) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
-		myNet.network = new MultiLayerPerceptron(22, 100, 7);
+		myNet.network = new MultiLayerPerceptron(22, 50, 7);
 		myNet.network.setLearningRule(new MomentumBackpropagation());
 		MomentumBackpropagation rule =(MomentumBackpropagation) myNet.network.getLearningRule();
 		rule.setMaxIterations(5000);
@@ -108,12 +103,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		myNet.fullSet = new DataSet(22, 7);
 		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 
-		Normalizer norm = new MaxNormalizer();
-		norm.normalize(myNet.fullSet);
-
-		int trainingSetPercentage = 70;
-//		String[] names = "Filename,Difficulty,wasSolved,NakedSingles,HiddenSingles,NakedSubsets_Size2,HiddenSubsets_Size2,BlockLine-Interactions,NakedSubsets_Size3,HiddenSubsets_Size3,NakedSubsets_Size4,HiddenSubsets_Size4,XWingCountGivenCount,AnzStartPos1,AnzStartPos2,AnzStartPos3,AnzStartPos4,AnzStartPos5,AnzStartPos6,AnzStartPos7,AnzStartPos8,AnzStartPos9,AnzPossibilities,wasBacktracked".split(",");
-//		myNet.fullSet.setColumnNames(names);
+		int trainingSetPercentage = 80;
 
 		DataSet[] sets = myNet.fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
 		DataSet training = sets[0];
@@ -147,57 +137,27 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
-	private DataSetRow addBoard(Board ori) {
+	private DataSetRow getFeaturesAsRow(Board ori) {
 		Board b = new Board(ori);
 		
-		SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
-				new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2), new BlockLineInteractionMethod(),
-				new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
-				new HiddenSubSetMethod((byte) 4), new XWingMethod() };
-
-		b.setupBoard();
-
-		int[] startPos = Counter.check(b);
-		int total = 0;
-		for (int i = 1; i <= b.SIZE; i++) {
-			total += startPos[i - 1];
-		}
-
-		int possibilities[] = Counter.countPossibilities(b);
-		int totalPossibilities = 0;
-		for (int i = 1; i <= b.SIZE; i++) {
-			totalPossibilities += possibilities[i - 1];
-		}
-
-		boolean solving = true;
-		int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		int wasBacktracked = 0;
-
-		int solveMethod = 0;
-		while (solving) {
-			if (solveMethod >= methods.length) {
-				solving = false;
-				solveMethod = 0;
-			} else if (methods[solveMethod].apply(b)) {
-				solveCounter[solveMethod]++;
-				solveMethod = 0;
-			} else
-				solveMethod++;
-		}
-
-		if (!b.isSolvedCorrectly()) {
-			Backtrack.solve(b);
-			wasBacktracked = 1;
-		}
-
-		double toSolveCount = b.SIZE * b.SIZE - b.GIVENCOUNT;
-		double[] inputValues = new double[] { (double) solveCounter[0] / toSolveCount,
-				(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], 
-				solveCounter[4], solveCounter[5], solveCounter[6], solveCounter[7],solveCounter[8], solveCounter[9], b.GIVENCOUNT, startPos[0],
-				startPos[1], startPos[2], startPos[3], startPos[4], startPos[5], startPos[6], startPos[7], startPos[8],
-				totalPossibilities, wasBacktracked };
+		int[] features = Solver.solve(b, true);
+		double[] inputValues = normalizeFeaturesLog(features);
 		return new DataSetRow(inputValues);
-
+	}
+	
+	public double[] normalizeFeaturesLog(int[] features){
+				
+		double[] results = new double[features.length-2];
+		for(int i=2;i<features.length-2;i++){
+			results[i] = Math.log(features[i+2]+1);
+		}
+		
+		double percentageNaked = (double)features[2]/(double)features[12];
+		double percentageHidden = (double)features[2]/(double)features[12];
+		results[0] = percentageNaked;
+		results[1] = percentageHidden;
+		
+		return results;		
 	}
 
 	private void solve(File source) {
@@ -205,47 +165,10 @@ public class NeuralNetworkHandler implements LearningEventListener {
 			ArrayList<Board> list = new ArrayList<>();
 
 			list.addAll(SudokuReader.readFromFile(source));
-			SolveMethod[] methods = new SolveMethod[] { new NakedSingleMethod(), new HiddenSingleMethod(),
-					new NakedSubSetMethod((byte) 2), new HiddenSubSetMethod((byte) 2), new BlockLineInteractionMethod(),
-					new NakedSubSetMethod((byte) 3), new HiddenSubSetMethod((byte) 3), new NakedSubSetMethod((byte) 4),
-					new HiddenSubSetMethod((byte) 4), new XWingMethod() };
-
+		
 			for (Board b : list) {
-				b.setupBoard();
-
-				int[] startPos = Counter.check(b);
-				int total = 0;
-				for (int i = 1; i <= b.SIZE; i++) {
-					total += startPos[i - 1];
-				}
-
-				int possibilities[] = Counter.countPossibilities(b);
-				int totalPossibilities = 0;
-				for (int i = 1; i <= b.SIZE; i++) {
-					totalPossibilities += possibilities[i - 1];
-				}
-
-				boolean solving = true;
-				int[] solveCounter = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-				int wasBacktracked = 0;
-
-				int solveMethod = 0;
-				while (solving) {
-					if (solveMethod >= methods.length) {
-						solving = false;
-						solveMethod = 0;
-					}
-					if (methods[solveMethod].apply(b)) {
-						solveCounter[solveMethod]++;
-						solveMethod = 0;
-					} else
-						solveMethod++;
-				}
-
-				if (!b.isSolvedCorrectly()) {
-					Backtrack.solve(b);
-					wasBacktracked = 1;
-				}
+				int[] features = Solver.solve(b, true);
+				
 				int[] difficulty = new int[7];
 				if (source.toString().contains("veryeasy") || source.toString().contains("S1"))
 					difficulty[0] = 1;
@@ -262,12 +185,7 @@ public class NeuralNetworkHandler implements LearningEventListener {
 				else if (source.toString().contains("evil") || source.toString().contains("exotic"))
 					difficulty[6] = 1;
 
-				double toSolveCount = b.SIZE * b.SIZE - b.GIVENCOUNT;
-				double[] inputValues = new double[] { (double) solveCounter[0] / toSolveCount,
-						(double) solveCounter[1] / toSolveCount, solveCounter[2], solveCounter[3], solveCounter[4],
-						solveCounter[5], solveCounter[6], solveCounter[7], solveCounter[8],solveCounter[9], b.GIVENCOUNT, startPos[0],
-						startPos[1], startPos[2], startPos[3], startPos[4], startPos[5], startPos[6], startPos[7],
-						startPos[8], totalPossibilities, wasBacktracked };
+				double[] inputValues = normalizeFeaturesLog(features);
 				double[] outputValues = new double[] { difficulty[0], difficulty[1], difficulty[2], difficulty[3],
 						difficulty[4], difficulty[5], difficulty[6], };
 				fullSet.addRow(inputValues, outputValues);		
