@@ -28,23 +28,54 @@ import ch.fhnw.ip5.sudoku.solver.methods.NakedSubSetMethod;
 import ch.fhnw.ip5.sudoku.solver.methods.XWingMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-//TODO JAVADOC
+/**
+ * Neural Network to classify Sudokus 
+ *
+ */
 public class NeuralNetworkHandler implements LearningEventListener {
 
+	/**
+	 * contains the full Dataset for Training
+	 */
 	public DataSet fullSet;
+	
+	/** 
+	 * number of all predicted sudokus for every difficulty plus one couter for all sudokus
+	 */
 	public int[] countAll = new int[8];
+	
+	/**
+	 * number of correctly predicted sudokus for every difficulty plus one counter for all sudokus
+	 */
 	public int[] countCorrect = new int[8];
-	int unpredicted = 0;
+	
+	/**
+	 * Expresses if the network was already trained
+	 */
 	boolean trained = false;
 
+	/** 
+	 * Contains the confusion Matrix of the Testset
+	 */
 	int[][] confMat = new int[7][7];
+	
+	/***
+	 * The actual neural Network
+	 */
 	MultiLayerPerceptron network;
 
+	/***
+	 * Wrapper with default path of training set
+	 */
 	public void trainNetwork() {
 		trainNetwork("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 	}
 
 	@Override
+	/**
+	 * Listener to display learning status
+	 * @param event the event containing the data to display
+	 */
 	public void handleLearningEvent(LearningEvent event) {
 		BackPropagation bp = (BackPropagation) event.getSource();
 
@@ -53,18 +84,25 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	}
 
+	/***
+	 * Train the network with 22 inputs, 1 hidden Layer containing 50 Neurons and 7 outputs.
+	 * Learning stops if a MSE of 0.01 or lower is reached or if 5000 iterations passed.
+	 * 80% of the Dataset are used for training, the rest for testing the network.
+	 * MomentumBackpropagation with a Momentum of 0.7 and a Learningrate of 0.1 is used as LearningRule.
+	 * @param path Path pointing to the trainingset
+	 */
 	public void trainNetwork(String path) {
 		network = new MultiLayerPerceptron(22, 50, 7);
 		network.setLearningRule(new MomentumBackpropagation());
 		;
 		MomentumBackpropagation rule = (MomentumBackpropagation) network.getLearningRule();
-		rule.setMaxIterations(2000);
+		rule.setMaxIterations(5000);
 		rule.setMomentum(0.7);
 		rule.setLearningRate(0.1);
 		fullSet = new DataSet(22, 7);
 		sudokusToFile(path);
 
-		int trainingSetPercentage = 70;
+		int trainingSetPercentage = 80;
 
 		DataSet[] sets = fullSet.createTrainingAndTestSubsets(trainingSetPercentage, 100 - trainingSetPercentage);
 		DataSet training = sets[0];
@@ -75,11 +113,15 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 		testNeuralNetwork(network, test);
 	}
-
+	
+	/***
+	 * Predicts the difficulty of a single sudoku board
+	 * @param b Board to be classified
+	 * @return difficulty of the board
+	 */
 	public int predictBoard(Board b) {
-		if (!trained) {
-			trainNetwork();
-		}
+		if (!trained)
+			trainNetwork();		
 
 		DataSetRow row = getFeaturesAsRow(b);
 		double[] input = row.getInput();
@@ -92,15 +134,21 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	}
 
+	/***
+	 * Trains the network with default values
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		NeuralNetworkHandler myNet = new NeuralNetworkHandler();
 		myNet.network = new MultiLayerPerceptron(22, 50, 7);
 		myNet.network.setLearningRule(new MomentumBackpropagation());
 		MomentumBackpropagation rule = (MomentumBackpropagation) myNet.network.getLearningRule();
+		
 		rule.setMaxIterations(5000);
 		rule.addListener(myNet);
-		rule.setLearningRate(0.05);
+		rule.setLearningRate(0.1);
 		rule.setMomentum(0.7);
+		
 		myNet.fullSet = new DataSet(22, 7);
 		myNet.sudokusToFile("C:\\Users\\Matth\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\old_parsed");
 
@@ -115,6 +163,10 @@ public class NeuralNetworkHandler implements LearningEventListener {
 
 	}
 
+	/***
+	 * Parses every subNode of given Path
+	 * @param filePath Path to start parsing
+	 */
 	private void sudokusToFile(String filePath) {
 
 		File node = new File(filePath);
@@ -124,6 +176,10 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
+	/***
+	 * Recursivly start solving every sudoku in given Directory
+	 * @param source current position
+	 */
 	private void parse(File source) {
 		if (source.isDirectory()) {
 			String[] subNode = source.list();
@@ -138,6 +194,11 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
+	/***
+	 * Solves the board and returns a normalized feature vector
+	 * @param ori the board to get the feature vector from
+	 * @return return DataSetRow to be estimated by the network
+	 */
 	private DataSetRow getFeaturesAsRow(Board ori) {
 		Board b = new Board(ori);
 
@@ -146,6 +207,12 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		return new DataSetRow(inputValues);
 	}
 
+	/**
+	 * Creates features from statistics array (hidden/naked singles to PercentageHidden/Naked)
+	 * Logarithmus over all features
+	 * @param features features of sudoku
+	 * @return normalized feature vector 
+	 */
 	public double[] normalizeFeaturesLog(int[] features) {
 
 		double[] results = new double[features.length - 2];
@@ -161,6 +228,10 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		return results;
 	}
 
+	/**
+	 * Solves every board in source file and adds its normalized feature vector to fullSet.
+	 * @param source .sudoku File
+	 */
 	private void solve(File source) {
 		try {
 			ArrayList<Board> list = new ArrayList<>();
@@ -197,6 +268,12 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
+	/**
+	 * Test the accuracy of the neural network.
+	 * Prints confusion Matrix.
+	 * @param neuralNet neural Network to test
+	 * @param testSet Set to use for Test
+	 */
 	public void testNeuralNetwork(MultiLayerPerceptron neuralNet, DataSet testSet) {
 
 		System.out.println("Result:");
@@ -217,13 +294,13 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		System.out.println("Total cases: " + this.countAll[7] + ". ");
 		System.out.println("Correctly predicted cases: " + this.countCorrect[7] + ". ");
 		System.out.println(
-				"Incorrectly predicted cases: " + (this.countAll[7] - this.countCorrect[7] - unpredicted) + ". ");
+				"Incorrectly predicted cases: " + (this.countAll[7] - this.countCorrect[7]) + ". ");
 		double percentTotal = (double) this.countCorrect[7] * 100 / (double) this.countAll[7];
 		System.out.println("Predicted correctly: " + percentTotal + "%. ");
-
-		unpredicted = 0;
 	}
-
+	/**
+	 * Print data from confMat array as Confusion Matrix.
+	 */
 	private void printConfMat() {
 		for (int i = 0; i < confMat.length; i++) {
 			for (int j = 0; j < confMat[i].length; j++) {
@@ -233,6 +310,11 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
+	/**
+	 * chooses max value of given array
+	 * @param array Contains values assigned by neural network
+	 * @return actual difficulty value (0-based)
+	 */
 	private static int maxOutput(double[] array) {
 		double max = array[0];
 		int index = 0;
@@ -246,6 +328,11 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		return index;
 	}
 
+	/**
+	 * add predictions to the global arrays
+	 * @param prediction prediction of certain board
+	 * @param ideal actual difficulty value of the board
+	 */
 	private void keepScore(int prediction, int ideal) {
 		addToConfMat(prediction, ideal);
 		countAll[ideal]++;
@@ -257,6 +344,11 @@ public class NeuralNetworkHandler implements LearningEventListener {
 		}
 	}
 
+	/**
+	 * add current prediction to confusionmatrix.
+	 * @param prediction Predicted difficulty of board.
+	 * @param ideal Actual difficulty of predicted sudoku.
+	 */
 	private void addToConfMat(int prediction, int ideal) {
 		if (prediction >= 0)
 			confMat[prediction][ideal]++;

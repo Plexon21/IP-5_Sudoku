@@ -19,7 +19,9 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
-//TODO JAVADOC
+/**
+ * Small gui to visualize hidden and naked single method usage for testing purposes
+ */
 public class SudokuGUI extends JFrame implements ActionListener {
 	private HashMap<UsedMethod, Color> colors;
 	Board[] boards;
@@ -33,6 +35,11 @@ public class SudokuGUI extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
+	/**
+	 * Show a GUI for a List of boards
+	 * @param boards list of boards (solving steps)
+	 * @param currStep index of boards
+	 */
 	public SudokuGUI(Board[] boards, int currStep) {
 		this.colors = new HashMap<UsedMethod,Color>();
 		this.currStep = currStep;
@@ -60,6 +67,7 @@ public class SudokuGUI extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
+	
 	private void initColors() {
 		colors.put(UsedMethod.GIVEN, Color.WHITE);
 		colors.put(UsedMethod.NAKEDSINGLE, Color.ORANGE);
@@ -73,6 +81,11 @@ public class SudokuGUI extends JFrame implements ActionListener {
 		setSize(800, 600);
 	}
 
+	/** 
+	 * show a single sudoku
+	 * @param b board to display
+	 * @return Panel to show
+	 */
 	public JPanel showSudoku(Board b) {
 		JPanel grid = new JPanel();
 		grid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
