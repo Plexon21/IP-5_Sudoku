@@ -4,7 +4,9 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
-//TODO JAVADOC
+/**
+ * class to solve a Sudoku with backtracking
+ */
 public class Backtrack{
 	
 	private static byte size;
@@ -12,6 +14,12 @@ public class Backtrack{
 	private static byte boxwidth;
 	private static byte[][] board;
 	
+	/**
+	 * solve a board by backtracking
+	 * 
+	 * @param b the board to solve
+	 * @return true if the board could be backtracked | false otherwise
+	 */
 	public static boolean solve(Board b) {
 		
 		size = b.SIZE;
