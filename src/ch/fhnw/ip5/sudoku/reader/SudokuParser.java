@@ -13,7 +13,10 @@ import org.w3c.dom.NodeList;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-//TODO JAVADOC
+/** 
+ * Class used to parse .xml-like sudoku files
+ *
+ */
 public class SudokuParser {
 
 	public static char[] values;
@@ -23,6 +26,11 @@ public class SudokuParser {
 		b.simplePrint();
 	}
 
+	/**
+	 * Parse sudoku from xml file
+	 * @param fileName file to parse (Datenpaket 1)
+	 * @return Boardstring for parsed sudoku
+	 */
 	public static String parseSudoku(String fileName) {
 		try {
 			DocumentBuilderFactory bf = DocumentBuilderFactory.newInstance();
@@ -38,10 +46,20 @@ public class SudokuParser {
 		}
 	}
 
+	/**
+	 * Parse and read sudoku from xml
+	 * @param fileName file containing sudoku
+	 * @return parsed Board
+	 */
 	public static Board parseAndReadSudoku(String fileName) {
 		return SudokuReader.parseLine(parseSudoku(fileName));
 	}
 
+	/**
+	 * fill values of sudoku into array
+	 * @param e current element
+	 * @param indent
+	 */
 	private static void traverse(Element e, int indent) {
 		if (e.getNodeName().equalsIgnoreCase("cell")) {
 			NamedNodeMap m = e.getAttributes();
