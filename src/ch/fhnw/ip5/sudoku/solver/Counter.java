@@ -6,8 +6,19 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.UsedMethod;
 
-//TODO JAVADOC
+/**
+ * 
+ * class to count possible starting pos and pencilmarks of board
+ *
+ */
 public class Counter {
+	/**
+	 * Traverses the whole board using Hidden and Naked Single Methods
+	 * Counts the positions, where it would be possible to set a number
+	 * counts number of starting pos for every number
+	 * @param b the board which needs to be checked for starting pos
+	 * @return Array containing number of starting pos for every number
+	 */
 	public static int[] check(Board b) {
 		int pos[] = new int[b.SIZE];
 		boolean noMoreStartPos = false;
@@ -29,6 +40,11 @@ public class Counter {
 		return pos;
 	}
 
+/**
+ * Count all Pencilmarks in the board
+ * @param b the board on which the pencilmarks will be counted
+ * @return number of pencilmarks
+ */
 	public static int[] countPossibilities(Board b) {
 		Board tmp = new Board(b);
 		int[] possibilities = new int[tmp.SIZE];

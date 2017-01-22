@@ -6,9 +6,15 @@ import java.io.IOException;
 
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 
-//TODO JAVADOC
+/**
+ * Class used to parse sudokus from "Datenpaket 2" to .sudoku format
+ *
+ */
 public class SudokuCSVParser {
 
+	/**
+	 * values of the sudoku read
+	 */
 	public static char[] values;
 
 	public static void main(String[] args) {
@@ -16,6 +22,11 @@ public class SudokuCSVParser {
 		b.simplePrint();
 	}
 
+	/**
+	 * Parses the sudoku from the given fileName to .sudoku filestring
+	 * @param fileName name of source file
+	 * @return parsed sudoku filestring
+	 */
 	public static String parseSudoku(String fileName) {
 		String result = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -62,6 +73,11 @@ public class SudokuCSVParser {
 		}
 	}
 
+	/**
+	 * Creates a Board object from a .csv sudoku file
+	 * @param fileName name of file to parse
+	 * @return Parsed sudoku as Board object
+	 */
 	public static Board parseAndReadSudoku(String fileName) {
 		return SudokuReader.parseLine(parseSudoku(fileName));
 	}
