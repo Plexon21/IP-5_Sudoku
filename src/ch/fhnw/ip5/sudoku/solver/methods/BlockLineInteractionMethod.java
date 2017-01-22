@@ -7,7 +7,9 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
-//TODO JAVADOC
+/**
+ * implemtation of the Block-Line Interactions solving method
+ */
 public class BlockLineInteractionMethod implements SolveMethod{
 
 	@Override

@@ -8,23 +8,32 @@ import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
-//TODO JAVADOC
+/**
+ * implemtation of the Naked Subset solving method
+ */
 public class NakedSubSetMethod implements SolveMethod{
+	
 	private byte subsetSize = 2;
 
-	public NakedSubSetMethod(){
-	}
+	/**
+	 * constructor
+	 * default subset size is 2
+	 */
+	public NakedSubSetMethod(){}
+	
+	/**
+	 * constructor
+	 * 
+	 * @param subsetSize the size of the subset to search for
+	 */
 	public NakedSubSetMethod(byte subsetSize){
 		this.subsetSize = subsetSize;
 	}
 	
 	@Override
 	public boolean apply(Board b) {
-		if (solveForSubsetsize(b, subsetSize))
-		{
-			return true;
-		}		
-		return false;
+	
+		return solveForSubsetsize(b, subsetSize);
 		
 	}
 	
@@ -55,7 +64,7 @@ public class NakedSubSetMethod implements SolveMethod{
 		}
 		
 		if (possibleSubsetCells.size() == subsetsize) {
-			//subsetlist could be exact subset; check if possible values are the same
+			//subsetlist could be exact subset, check if possible values are the same
 			if (isSubset(possibleSubsetCells)) {
 				
 				Cell firstCell = possibleSubsetCells.get(0);
@@ -73,6 +82,7 @@ public class NakedSubSetMethod implements SolveMethod{
 				}
 				
 				return somethingChanged;
+				
 			} else {
 				return false;
 			}

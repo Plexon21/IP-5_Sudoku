@@ -4,7 +4,9 @@ import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 
-//TODO JAVADOC
+/**
+ * implemtation of the X-Wing solving method
+ */
 public class XWingMethod implements SolveMethod {
 
 	@Override
@@ -12,58 +14,58 @@ public class XWingMethod implements SolveMethod {
 		
 		for (byte i = 0; i < b.SIZE-1; i++) {
 			
-			for (byte v1 = 1; v1 < b.SIZE+1; v1++) {
+			for (byte value = 1; value < b.SIZE+1; value++) {
 					
-				int count = 0;
-				Cell[] cs = new Cell[2];
+				int numFirstLineCells = 0;
+				Cell[] cells = new Cell[2];
 				
 				for (byte k = 0; k < b.SIZE; k++) {
 					
 					Cell c = b.getCellAt(i, k);
 					
-					if (c.isPossible(v1)) {
+					if (c.isPossible(value)) {
 						
-						if (count < 2) {
-							cs[count] = c;
+						if (numFirstLineCells < 2) {
+							cells[numFirstLineCells] = c;
 						}
 						
-						count++;
+						numFirstLineCells++;
 					}
 				}
 				
-				if (count == 2) {
+				if (numFirstLineCells == 2) {
 					
 					for (byte j = (byte)(i+1); j < b.SIZE; j++) {
 						
-						int count1 = 0;
-						int count2 = 0;
+						int verticalCheckCounter = 0;
+						int numSecondLineCells = 0;
 						
 						for (byte k = 0; k < b.SIZE; k++) {
 							
 							Cell u = b.getCellAt(j, k);
 							
-							if (u.isPossible(v1)) {
+							if (u.isPossible(value)) {
 								
-								count2++;
+								numSecondLineCells++;
 								
-								if (cs[0].getWpos() == k || cs[1].getWpos() == k) count1++;
+								if (cells[0].getWpos() == k || cells[1].getWpos() == k) verticalCheckCounter++;
 
 							}
 							
 						}
 						
-						if (count1 == 2 && count2 == 2) {
+						if (verticalCheckCounter == 2 && numSecondLineCells == 2) {
 							
 							//XWing found
 							boolean somethingChanged = false;
 							
-							for (int t = 0; t < cs.length; t++) {
-								for (Cell q : (b.getColumns()[cs[t].getWpos()]).getCells()) {
+							for (int t = 0; t < cells.length; t++) {
+								for (Cell q : (b.getColumns()[cells[t].getWpos()]).getCells()) {
 									
 									if (q.getHpos() != i && q.getHpos() != j) {
 										
-										if (q.isPossible(v1)) {
-											q.setImpossible(v1);
+										if (q.isPossible(value)) {
+											q.setImpossible(value);
 											somethingChanged = true;
 										}
 										

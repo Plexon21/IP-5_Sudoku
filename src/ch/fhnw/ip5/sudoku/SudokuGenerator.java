@@ -107,6 +107,8 @@ public class SudokuGenerator {
 		System.out.println("Generating " + numberOfSudoku + " Sudokus.");
 		
 		Generator generator = new Generator(minClues, maxClues);
+		
+		long time = System.currentTimeMillis();
 
 		while (numberOfSudoku > 0) {
 
@@ -114,6 +116,7 @@ public class SudokuGenerator {
 
 			Board ori = seventeens.get(ran);
 
+			//generation method
 			Board gen = generator.generateBoardWithRandomCells(ori);
 //			Board gen = generator.generateBoardWithRandomFlippedCells(ori);
 //			Board gen = generator.generateBoardRemoving(ori);
@@ -125,6 +128,8 @@ public class SudokuGenerator {
 				numberOfSudoku--;
 			}
 		}
+		
+		long effectiveTime = System.currentTimeMillis()-time;
 
 		System.out.println("Amount of Sudoku generated: " + generatedSudoku.size());
 
@@ -139,6 +144,8 @@ public class SudokuGenerator {
 		for (int i = 0; i < diffs.length; i++) {
 			System.out.println(Difficulty.values()[i] + ": " + diffs[i]);
 		}
+		
+		System.out.println("Time used: " + effectiveTime + " miliseconds");
 
 		BufferedWriter bw;
 		try {

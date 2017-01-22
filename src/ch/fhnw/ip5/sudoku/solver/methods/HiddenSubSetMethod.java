@@ -2,28 +2,36 @@ package ch.fhnw.ip5.sudoku.solver.methods;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
-
 import ch.fhnw.ip5.sudoku.solver.SolveMethod;
 import ch.fhnw.ip5.sudoku.sudoku.Board;
 import ch.fhnw.ip5.sudoku.sudoku.Cell;
 import ch.fhnw.ip5.sudoku.sudoku.Container;
 
-//TODO JAVADOC
+/**
+ * implemtation of the Hidden Subset solving method
+ */
 public class HiddenSubSetMethod implements SolveMethod {
 
 	private byte size;
-	private byte subsetSize;
-	public HiddenSubSetMethod() {
-	}
+	private byte subsetSize = 2;
+	
+	/**
+	 * constructor
+	 * default subset size is 2
+	 */
+	public HiddenSubSetMethod() {}
+	
+	/**
+	 * constructor
+	 * 
+	 * @param subsetSize the size of the subset to search for
+	 */
 	public HiddenSubSetMethod(byte subsetSize) {
 		this.subsetSize = subsetSize;
 	}
 
 	@Override
 	public boolean apply(Board b) {
-
-		// b.cluesPrint();
 
 		size = b.SIZE;
 
@@ -61,23 +69,13 @@ public class HiddenSubSetMethod implements SolveMethod {
 			}
 		}
 
-		// for (int i = 0; i < pencilSets.length; i++) {
-		//
-		// System.out.println("possible for " + (i+1));
-		//
-		// for (Cell c : pencilSets[i]) {
-		// System.out.println("Cell #" + c.getHpos() + " " + c.getWpos());
-		// }
-		// }
-
 		boolean[] subsetvalues = new boolean[size];
 
 		return checkRecursive(pencilSets, subsetsize, 0, 1, new HashSet<Cell>(), subsetvalues);
 
 	}
 
-	private boolean checkRecursive(Set<Cell>[] pencilsets, byte subsetsize, int pos, int count, HashSet<Cell> solset,
-			boolean[] subsetvalues) {
+	private boolean checkRecursive(Set<Cell>[] pencilsets, byte subsetsize, int pos, int count, HashSet<Cell> solset, boolean[] subsetvalues) {
 
 		if (pos >= size || count > subsetsize)
 			return false;
@@ -88,18 +86,6 @@ public class HiddenSubSetMethod implements SolveMethod {
 				HashSet<Cell> tempSet = (HashSet<Cell>) solset.clone();
 				tempSet.addAll(pencilsets[k]);
 				subsetvalues[k] = true;
-
-				// for (int i = 0; i < subsetvalues.length; i++) {
-				// if (subsetvalues[i]) System.out.println("Subsetvalue: " +
-				// (i+1));;
-				// }
-				//
-				// for (Cell c : tempSet) {
-				// System.out.println("Cell #" + c.getHpos() + " " +
-				// c.getWpos());
-				// }
-				//
-				// System.out.println();
 
 				if (tempSet.size() == subsetsize && count == subsetsize) {
 					// subset was found
