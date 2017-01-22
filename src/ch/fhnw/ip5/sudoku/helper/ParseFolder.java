@@ -6,7 +6,10 @@ import java.io.PrintWriter;
 
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
-//TODO JAVADOC
+/**
+ * Parses one folder of xml files into the .sudoku format (Datenpaket 1)
+ *
+ */
 public class ParseFolder {
 	public static String sourceFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy";
 	public static String targetFolder = "C:\\Users\\Simon\\OneDrive\\IP5-Sudoku\\Raetsel AG Sudoku\\06010054800_Archive_veryeasy_parsed";
@@ -26,6 +29,13 @@ public class ParseFolder {
 		}
 	}
 
+	/**
+	 * Parse files recursively recursively
+	 * 
+	 * @param source
+	 * @param parser
+	 * @param target
+	 */
 	private static void parse(File source, SudokuParser parser, File target) {
 		if (source.isDirectory()) {
 			File targetFolder = new File(target, source.getName());
@@ -41,6 +51,11 @@ public class ParseFolder {
 		}
 	}
 
+	/**
+	 * write sudokustring to target file
+	 * @param sudokuString
+	 * @param target
+	 */
 	private static void write(String sudokuString, File target) {
 		target.getParentFile().mkdirs();
 		try {

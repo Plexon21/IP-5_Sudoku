@@ -7,7 +7,10 @@ import java.io.PrintWriter;
 import ch.fhnw.ip5.sudoku.reader.SudokuCSVParser;
 import ch.fhnw.ip5.sudoku.reader.SudokuParser;
 
-//TODO JAVADOC
+/**
+ * Parses one folder of csv files into the .sudoku format
+ *
+ */
 public class ParseCSVFolder {
 	public static String sourceFolder = "C://Users//Matth//Downloads//Sudoku//KTI";
 	public static String targetFolder = "C://Users//Matth//Downloads//Sudoku//KTI_parsed";
@@ -27,6 +30,13 @@ public class ParseCSVFolder {
 		}
 	}
 
+	/**
+	 * Parse files recursively recursively
+	 * 
+	 * @param source
+	 * @param parser
+	 * @param target
+	 */
 	private static void parse(File source, SudokuCSVParser parser, File target) {
 		if (source.isDirectory()) {
 			File targetFolder = new File(target, source.getName());
@@ -42,6 +52,11 @@ public class ParseCSVFolder {
 		}
 	}
 
+	/**
+	 * write sudokustring to target file
+	 * @param sudokuString
+	 * @param target
+	 */
 	private static void write(String sudokuString, File target) {
 		target.getParentFile().mkdirs();
 		try {
